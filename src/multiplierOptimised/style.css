@@ -1,0 +1,48 @@
+.main{
+    flex-direction: column;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+}
+.table{
+    display: flex;
+    flex-direction: row;
+}
+.table div{ display: flex;
+    flex-direction: column;}
+
+.header{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    background-color: rgb(102, 102, 228);
+    padding: 0px 10px 0px 10px;
+    
+   
+}
+.row{
+    display: flex;
+    justify-content: center;
+}
+.numberOfStepZero{
+    height: 24.063px;
+    border: 1px solid black;
+    justify-content: center;
+    align-items: center;
+}
+.numberOfStep{
+    height: 50px;
+    border-bottom: 1px solid black;
+    background-color: aqua;
+    justify-content: center;
+    align-items: center;
+}
+.currAction{
+    height: 24.063px;
+    border-bottom: 1px solid black;
+    justify-content: center;
+    align-items: center;
+}
