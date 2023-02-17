@@ -1,11 +1,9 @@
+import MultiplierOptimised from "./multiplierOptimised/multiplierOptimised";
 
-import './App.css';
-import Multiplier from './multiplier/multiplier';
-import MultiplierOptimised from './multiplierOptimised/multiplierOptimised';
 function App() {
   return (
     <div className="App">
-      <MultiplierOptimised/>
+      <MultiplierOptimised />
     </div>
   );
 }
