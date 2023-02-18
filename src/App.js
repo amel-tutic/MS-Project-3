@@ -4,7 +4,7 @@ import Multiplier from "./multiplier/multiplier";
 function App() {
   return (
     <div className="App">
-      <MultiplierOptimised />
+      <Multiplier />
     </div>
   );
 }

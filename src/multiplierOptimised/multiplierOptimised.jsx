@@ -21,7 +21,7 @@ const MultiplierOptimised = () => {
   const [listOfMcand, setListOfMcand] = useState([]);
   const [listOfAction, setListOfAction] = useState(["Initial values"]);
   const [active, setActive] = useState([]);
-  let lsbPML = "";
+
   //define iteration effect
   useEffect(() => {
     if (iteration !== 0) {
@@ -129,40 +129,52 @@ const MultiplierOptimised = () => {
   return (
     <div className="main">
       <table>
-        {/* headers and initial values */}
+        {/* headers*/}
         <th className="header">Step</th>
         <th className="headerAction">Action</th>
         <th className="header">Mcand</th>
         <th className="header">Prod/Mplier</th>
+
+        {/* initial values */}
         <tr>
           <td className="numberOfStepS">0</td>
+
           <td className="numberOfStep">
-            <tr className="prodLSBAction">{listOfAction[0]}</tr>
+            <tr className="initialAction">{listOfAction[0]}</tr>
           </td>
+
           <td className="numberOfStep">
             <tr className="prodLSB">{listOfMcand[0]}</tr>
           </td>
+
           <td className="numberOfStep">
             <tr className="prodLSB">
               {PML.split("").map((item, index) => {
                 if (index != 15) {
                   return <div>{item}</div>;
                 } else {
+                  if(item != 0){
                   return <div className="LSB">{item}</div>;
+                  }
+                  else return <div>{item}</div>;
                 }
               })}
             </tr>
           </td>
+
         </tr>
 
         {/* step by step representation */}
         {/* formulas for iteration according to steps -> [step*2-1, step*2] */}
         {tableStep.map((item, index) => {
-          lsbPML = listOfPM[item * 2];
+          // lsbPML = listOfPM[item * 2];
 
           return (
             <tr>
+              {/* step */}
               <td className="numberOfStepS">{item}</td>
+
+              {/* action */}
               <td className="numberOfStep">
                 <p>
                   <tr className="prodLSBAction">
@@ -173,6 +185,8 @@ const MultiplierOptimised = () => {
                   <div>{listOfAction[item * 2]}</div>
                 </tr>
               </td>
+
+              {/* mcand */}
               <td className="numberOfStep">
                 <p>
                   <tr className="prodLSB">
@@ -183,22 +197,15 @@ const MultiplierOptimised = () => {
                   <div>{listOfMcand[item * 2]}</div>
                 </tr>
               </td>
+
+              {/* prod/mplier */}
               <td className="numberOfStep">
                 <p>
-                  <tr
-                    className={
-                      listOfAction[item * 2 - 1] !==
-                      "1b: No operation (LSB = 0)"
-                        ? "Active"
-                        : "prodLSB"
-                    }
-                  >
+                  <tr className={listOfAction[item * 2 - 1] !=="1b: No operation (LSB = 0)"? "Active" : "prodLSB"} >
                     <div>{listOfPM[item * 2 - 1]}</div>
                   </tr>
                 </p>
-                <tr className="prodLSB">
-                  {lsbPML !== undefined
-                    ? lsbPML.split("").map((item, index) => {
+                <tr className="prodLSB">{listOfPM[item * 2] !== undefined ? listOfPM[item * 2].split("").map((item, index) => {
                         if (index != 15) {
                           return <div>{item}</div>;
                         } else {
@@ -210,7 +217,9 @@ const MultiplierOptimised = () => {
                     : null}
                 </tr>
               </td>
+
             </tr>
+
           );
         })}
       </table>
