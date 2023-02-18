@@ -30,6 +30,13 @@
 .header {
   background-color: rgb(102, 102, 228);
 }
+tr {
+  height: 30px;
+}
+tr div {
+  margin: 0px;
+  padding: 0px;
+}
 
 .prdBtn {
   width: 50%;
@@ -58,6 +65,32 @@
 }
 
 p {
-  border-bottom: .5px solid black;
+  border-bottom: 0.5px solid black;
   /* margin: 0; */
+}
+.Active {
+  display: flex;
+  color: rgb(255, 7, 7);
+  margin: 0px;
+  padding: 0px;
+  align-items: center;
+  justify-content: center;
+}
+.prodLSB {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.prodLSBAction {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: start;
+}
+
+.LSB {
+  border: 3px solid red;
+  border-radius: 50%;
+  height: auto;
 }

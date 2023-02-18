@@ -4,7 +4,6 @@ import "./style.css";
 
 //define multiplier
 const Multiplier = () => {
-
   //define mcand, mplier, product
   let Ml = "00010011";
   let Mc = "0000000000011111";
@@ -62,7 +61,6 @@ const Multiplier = () => {
 
           //addition, prod=prod+mcand
           prodTemp = prodTemp.map((item, index) => {
-
             carry = carryTemp;
             carryTemp = 0;
 
@@ -92,7 +90,6 @@ const Multiplier = () => {
           });
           //unreverse and join product bits
           setProd(prodTemp.reverse().join(""));
-
         } else {
           setListOfAction([...listOfAction, "1b: No operation (LSB=0)"]);
         }
@@ -127,7 +124,6 @@ const Multiplier = () => {
   //visual representation
   return (
     <div className="mainM">
-      
       <table>
         {/* headers and initial values */}
         <th className="headerM">Step</th>
@@ -150,7 +146,7 @@ const Multiplier = () => {
             <tr>{P}</tr>
           </td>
         </tr>
-        
+
         {/* step by step representation */}
         {/* formulas for iteration according to steps -> [step*3-2, step*3-1, step*3] */}
         {tableStep.map((item, index) => {
@@ -158,30 +154,46 @@ const Multiplier = () => {
             <tr>
               <td className="numberOfStepS">{item}</td>
               <td className="numberOfStepM">
-                <p><tr>{listOfAction[item * 3 - 2]}</tr></p>
-                <p><tr>{listOfAction[item * 3 - 1]}</tr></p>
+                <p>
+                  <tr>{listOfAction[item * 3 - 2]}</tr>
+                </p>
+                <p>
+                  <tr>{listOfAction[item * 3 - 1]}</tr>
+                </p>
                 <tr>{listOfAction[item * 3]}</tr>
               </td>
               <td className="numberOfStepM">
-                <p><tr>{listOfMplier[item * 3 - 2]}</tr></p>
-                <p><tr>{listOfMplier[item * 3 - 1]}</tr></p>
+                <p>
+                  <tr>{listOfMplier[item * 3 - 2]}</tr>
+                </p>
+                <p>
+                  <tr>{listOfMplier[item * 3 - 1]}</tr>
+                </p>
                 <tr>{listOfMplier[item * 3]}</tr>
               </td>
               <td className="numberOfStepM">
-              <p><tr>{listOfMcand[item * 3 - 2]}</tr></p>
-              <p> <tr>{listOfMcand[item * 3 - 1]}</tr></p>
-              <tr>{listOfMcand[item * 3]}</tr>
+                <p>
+                  <tr>{listOfMcand[item * 3 - 2]}</tr>
+                </p>
+                <p>
+                  <tr>{listOfMcand[item * 3 - 1]}</tr>
+                </p>
+                <tr>{listOfMcand[item * 3]}</tr>
               </td>
               <td className="numberOfStepM">
-              <p><tr>{listOfProd[item * 3 - 2]}</tr></p>
-              <p><tr>{listOfProd[item * 3 - 1]}</tr></p>
+                <p>
+                  <tr>{listOfProd[item * 3 - 2]}</tr>
+                </p>
+                <p>
+                  <tr>{listOfProd[item * 3 - 1]}</tr>
+                </p>
                 <tr>{listOfProd[item * 3]}</tr>
               </td>
             </tr>
           );
         })}
       </table>
-      
+
       {/* basic representation with Next button */}
       <div className="prdBtnM">
         <h1>Operation: {listOfAction[listOfAction.length - 1]}</h1>

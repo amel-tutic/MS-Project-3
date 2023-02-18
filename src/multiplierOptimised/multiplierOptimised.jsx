@@ -4,7 +4,6 @@ import "./style.css";
 
 //define multiplierOptimised
 const MultiplierOptimised = () => {
-
   let Mc = "00000010";
   let P = "00000000";
   let Ml = "00011001";
@@ -21,7 +20,8 @@ const MultiplierOptimised = () => {
   const [listOfPM, setListOfPM] = useState([]);
   const [listOfMcand, setListOfMcand] = useState([]);
   const [listOfAction, setListOfAction] = useState(["Initial values"]);
-
+  const [active, setActive] = useState([]);
+  let lsbPML = "";
   //define iteration effect
   useEffect(() => {
     if (iteration !== 0) {
@@ -60,14 +60,18 @@ const MultiplierOptimised = () => {
 
       //step one
       if (steps === 1) {
-        if (prodMplier[15] === "0")
+        if (prodMplier[15] === "0") {
           setListOfAction([...listOfAction, "1b: No operation (LSB = 0)"]);
-        else {
-          setListOfAction([...listOfAction, "1a: Prod = Prod + Mcand (LSB = 1)"]);
+          setActive([...active, false]);
+        } else {
+          setListOfAction([
+            ...listOfAction,
+            "1a: Prod = Prod + Mcand (LSB = 1)",
+          ]);
+          setActive([...active, true]);
 
           //additon, prod=prod+mcand
           prodTemp = prodTemp.map((item, index) => {
-
             carry = carryTemp;
             carryTemp = 0;
 
@@ -103,7 +107,7 @@ const MultiplierOptimised = () => {
 
       //step two
       if (steps === 2) {
-        setListOfAction([...listOfAction, "Rshift Prod/Mplier"]);
+        setListOfAction([...listOfAction, "2: Rshift Prod/Mplier"]);
 
         //create and right shift prod/mplier representation, and reset steps
         let prodMplierTemp = prodMplier.split("");
@@ -124,7 +128,6 @@ const MultiplierOptimised = () => {
   //visual representation
   return (
     <div className="main">
-
       <table>
         {/* headers and initial values */}
         <th className="header">Step</th>
@@ -134,33 +137,78 @@ const MultiplierOptimised = () => {
         <tr>
           <td className="numberOfStepS">0</td>
           <td className="numberOfStep">
-            <tr>{listOfAction[0]}</tr>
+            <tr className="prodLSBAction">{listOfAction[0]}</tr>
           </td>
           <td className="numberOfStep">
-            <tr>{listOfMcand[0]}</tr>
+            <tr className="prodLSB">{listOfMcand[0]}</tr>
           </td>
           <td className="numberOfStep">
-            <tr>{listOfPM[0]}</tr>
+            <tr className="prodLSB">
+              {PML.split("").map((item, index) => {
+                if (index != 15) {
+                  return <div>{item}</div>;
+                } else {
+                  return <div className="LSB">{item}</div>;
+                }
+              })}
+            </tr>
           </td>
         </tr>
 
         {/* step by step representation */}
         {/* formulas for iteration according to steps -> [step*2-1, step*2] */}
         {tableStep.map((item, index) => {
+          lsbPML = listOfPM[item * 2];
+
           return (
             <tr>
               <td className="numberOfStepS">{item}</td>
               <td className="numberOfStep">
-                <p><tr>{listOfAction[item * 2 - 1]}</tr></p>
-                <tr>{listOfAction[item * 2]}</tr>
+                <p>
+                  <tr className="prodLSBAction">
+                    <div>{listOfAction[item * 2 - 1]}</div>
+                  </tr>
+                </p>
+                <tr className="prodLSBAction">
+                  <div>{listOfAction[item * 2]}</div>
+                </tr>
               </td>
               <td className="numberOfStep">
-              <p><tr>{listOfMcand[item * 2 - 1]}</tr></p>
-                <tr>{listOfMcand[item * 2]}</tr>
+                <p>
+                  <tr className="prodLSB">
+                    <div>{listOfMcand[item * 2 - 1]}</div>
+                  </tr>
+                </p>
+                <tr className="prodLSB">
+                  <div>{listOfMcand[item * 2]}</div>
+                </tr>
               </td>
               <td className="numberOfStep">
-              <p><tr>{listOfPM[item * 2 - 1]}</tr></p>
-                <tr>{listOfPM[item * 2]}</tr>
+                <p>
+                  <tr
+                    className={
+                      listOfAction[item * 2 - 1] !==
+                      "1b: No operation (LSB = 0)"
+                        ? "Active"
+                        : "prodLSB"
+                    }
+                  >
+                    <div>{listOfPM[item * 2 - 1]}</div>
+                  </tr>
+                </p>
+                <tr className="prodLSB">
+                  {lsbPML !== undefined
+                    ? lsbPML.split("").map((item, index) => {
+                        if (index != 15) {
+                          return <div>{item}</div>;
+                        } else {
+                          if (item === "1") {
+                            return <div className="LSB">{item}</div>;
+                          } else return <div>{item}</div>;
+                        }
+                      })
+                    : null}
+                </tr>
               </td>
             </tr>
           );
@@ -170,7 +218,7 @@ const MultiplierOptimised = () => {
       {/* basic representation with Next button */}
       <div className="prdBtn">
         <h1>Operation: {listOfAction[listOfAction.length - 1]}</h1>
-        <h1>Multiplicand: {prodMplier}</h1>
+        <h1>Multiplicand: {mcand}</h1>
         <h1>Product/Multiplier: {prodMplier}</h1>
         <button onClick={Step}>Next</button>
       </div>
