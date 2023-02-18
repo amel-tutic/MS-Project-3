@@ -52,9 +52,9 @@ const MultiplierOptimised = () => {
 
       if (steps === 1) {
         if (prodMplier[15] === "0")
-          setListOfAction([...listOfAction, "No operation (LSB = 0)"]);
+          setListOfAction([...listOfAction, "1b: No operation (LSB = 0)"]);
         else {
-          setListOfAction([...listOfAction, "Prod = Prod + Mcand (LSB = 1)"]);
+          setListOfAction([...listOfAction, "1a: Prod = Prod + Mcand (LSB = 1)"]);
           prodTemp = prodTemp.map((item, index) => {
             carry = carryTemp;
             carryTemp = 0;
@@ -112,7 +112,7 @@ const MultiplierOptimised = () => {
         <th className="header">Mcand</th>
         <th className="header">Prod/Mplier</th>
         <tr>
-          <td className="numberOfStep">0</td>
+          <td className="numberOfStepS">0</td>
           <td className="numberOfStep">
             <tr>{listOfAction[0]}</tr>
           </td>
@@ -126,7 +126,7 @@ const MultiplierOptimised = () => {
         {tableStep.map((item, index) => {
           return (
             <tr>
-              <td className="numberOfStep">{item}</td>
+              <td className="numberOfStepS">{item}</td>
               <td className="numberOfStep">
                 <tr>{listOfAction[item * 2 - 1]}</tr>
                 <tr>{listOfAction[item * 2]}</tr>
