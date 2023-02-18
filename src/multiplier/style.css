@@ -56,6 +56,8 @@
   width: 250px;
   background-color: rgb(102, 102, 228);
 }
-.Row {
-  border-bottom: 1px solid black;
+p {
+  border-bottom: .5px solid black;
+  margin: 0;
 }
+

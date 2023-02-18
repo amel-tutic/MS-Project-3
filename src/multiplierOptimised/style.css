@@ -56,3 +56,8 @@
   width: 260px;
   background-color: rgb(102, 102, 228);
 }
+
+p {
+  border-bottom: .5px solid black;
+  /* margin: 0; */
+}

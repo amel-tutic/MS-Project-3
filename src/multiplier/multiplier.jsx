@@ -2,10 +2,15 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import "./style.css";
 
+//define multiplier
 const Multiplier = () => {
-  let Ml = "10000000";
-  let Mc = "0000000000000001";
+
+  //define mcand, mplier, product
+  let Ml = "00010011";
+  let Mc = "0000000000011111";
   let P = "0000000000000000";
+
+  //define states
   const [mplier, setMplier] = useState(Ml);
   const [mcand, setMcand] = useState(Mc);
   const [prod, setProd] = useState(P);
@@ -14,8 +19,10 @@ const Multiplier = () => {
   const [listOfMplier, setListOfMplier] = useState([]);
   const [listOfMcand, setListOfMcand] = useState([]);
   const [listOfProd, setListOfProd] = useState([]);
-  const [fields, setFields] = useState([]);
+  const [tableStep, setTableStep] = useState([]);
   const [listOfAction, setListOfAction] = useState(["Initial values"]);
+
+  //define iteration effect
   useEffect(() => {
     if (iteration !== 0) {
       setListOfProd([...listOfProd, prod]);
@@ -23,12 +30,14 @@ const Multiplier = () => {
       setListOfMplier([...listOfMplier, mplier]);
     }
     if ((iteration + 1) % 3 === 0 && iteration < 25) {
-      setFields([...fields, (iteration + 1) / 3]);
+      setTableStep([...tableStep, (iteration + 1) / 3]);
     }
   }, [iteration]);
 
+  //helper for reseting steps
   let step = steps;
 
+  //function for a whole step
   function Step() {
     if (iteration <= 24) {
       console.log(iteration);
@@ -38,15 +47,22 @@ const Multiplier = () => {
       let prodTemp = prod;
       let carry = 0;
       let carryTemp = 0;
+
+      //split & reverse for bit by bit checking & addition
       mplierTemp = mplierTemp.split("");
       mcandTemp = mcandTemp.split("");
       mcandTemp.reverse();
       prodTemp = prodTemp.split("");
       prodTemp.reverse();
+
+      //step one
       if (steps === 1) {
         if (mplierTemp[7] === "1") {
           setListOfAction([...listOfAction, "1a: Prod = Prod + Mcand (LSB=1)"]);
+
+          //addition, prod=prod+mcand
           prodTemp = prodTemp.map((item, index) => {
+
             carry = carryTemp;
             carryTemp = 0;
 
@@ -74,35 +90,48 @@ const Multiplier = () => {
               }
             }
           });
+          //unreverse and join product bits
           setProd(prodTemp.reverse().join(""));
+
         } else {
           setListOfAction([...listOfAction, "1b: No operation (LSB=0)"]);
         }
       }
+
+      //step two
       if (steps === 2) {
         setListOfAction([...listOfAction, "2: Shif left Multiplicand"]);
 
+        //unreverse and shift left mcand
         mcandTemp.reverse();
         mcandTemp = mcandTemp.slice(1).join("") + "0";
         setMcand(mcandTemp);
       }
+
+      //step three
       if (steps === 3) {
         setListOfAction([...listOfAction, "3: Shif right Multiplier"]);
+
+        //shift right mplier, reset steps
         mplierTemp = "0" + mplierTemp.slice(0, 7).join("");
         setMplier(mplierTemp);
         step = 0;
-        setFields([...fields]);
+        setTableStep([...tableStep]);
       }
       setSteps(step + 1);
     }
+    //next iteration
     setIteration(iteration + 1);
   }
 
+  //visual representation
   return (
     <div className="mainM">
+      
       <table>
-        <th className="headerM">Iteration</th>
-        <th className="headerActionM">Step</th>
+        {/* headers and initial values */}
+        <th className="headerM">Step</th>
+        <th className="headerActionM">Action</th>
         <th className="headerM">Mplier</th>
         <th className="headerM">Mcand</th>
         <th className="headerM">Prod</th>
@@ -121,40 +150,46 @@ const Multiplier = () => {
             <tr>{P}</tr>
           </td>
         </tr>
-        {fields.map((item, index) => {
+        
+        {/* step by step representation */}
+        {/* formulas for iteration according to steps -> [step*3-2, step*3-1, step*3] */}
+        {tableStep.map((item, index) => {
           return (
             <tr>
               <td className="numberOfStepS">{item}</td>
               <td className="numberOfStepM">
-                <tr className="Row">{listOfAction[item * 3 - 2]}</tr>
-                <tr>{listOfAction[item * 3 - 1]}</tr>
+                <p><tr>{listOfAction[item * 3 - 2]}</tr></p>
+                <p><tr>{listOfAction[item * 3 - 1]}</tr></p>
                 <tr>{listOfAction[item * 3]}</tr>
               </td>
               <td className="numberOfStepM">
-                <tr>{listOfMplier[item * 3 - 2]}</tr>
-                <tr>{listOfMplier[item * 3 - 1]}</tr>
+                <p><tr>{listOfMplier[item * 3 - 2]}</tr></p>
+                <p><tr>{listOfMplier[item * 3 - 1]}</tr></p>
                 <tr>{listOfMplier[item * 3]}</tr>
               </td>
               <td className="numberOfStepM">
-                <tr>{listOfMcand[item * 3 - 2]}</tr>
-                <tr>{listOfMcand[item * 3 - 1]}</tr>
-                <tr>{listOfMcand[item * 3]}</tr>
+              <p><tr>{listOfMcand[item * 3 - 2]}</tr></p>
+              <p> <tr>{listOfMcand[item * 3 - 1]}</tr></p>
+              <tr>{listOfMcand[item * 3]}</tr>
               </td>
               <td className="numberOfStepM">
-                <tr>{listOfProd[item * 3 - 2]}</tr>
-                <tr>{listOfProd[item * 3 - 1]}</tr>
+              <p><tr>{listOfProd[item * 3 - 2]}</tr></p>
+              <p><tr>{listOfProd[item * 3 - 1]}</tr></p>
                 <tr>{listOfProd[item * 3]}</tr>
               </td>
             </tr>
           );
         })}
       </table>
+      
+      {/* basic representation with Next button */}
       <div className="prdBtnM">
-        <h1> multiplier:{mplier}</h1>
+        <h1>Operation: {listOfAction[listOfAction.length - 1]}</h1>
+        <h1> Multiplier: {mplier}</h1>
         <br />
-        <h1>mcand:{mcand} </h1>
+        <h1>Multiplicand: {mcand} </h1>
         <br />
-        <h1>prod:{prod}</h1>
+        <h1>Product: {prod}</h1>
         <br />
         <button onClick={Step}>Next</button>
       </div>
