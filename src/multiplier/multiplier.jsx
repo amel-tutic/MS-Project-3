@@ -150,45 +150,63 @@ const Multiplier = () => {
         {/* step by step representation */}
         {/* formulas for iteration according to steps -> [step*3-2, step*3-1, step*3] */}
         {tableStep.map((item, index) => {
+          let lsbM = listOfMplier[item * 3];
           return (
             <tr>
               <td className="numberOfStepS">{item}</td>
               <td className="numberOfStepM">
                 <p>
-                  <tr>{listOfAction[item * 3 - 2]}</tr>
+                  <tr className="trStyle">{listOfAction[item * 3 - 2]}</tr>
                 </p>
                 <p>
-                  <tr>{listOfAction[item * 3 - 1]}</tr>
+                  <tr className="trStyle">{listOfAction[item * 3 - 1]}</tr>
                 </p>
-                <tr>{listOfAction[item * 3]}</tr>
+                <tr className="trStyle">{listOfAction[item * 3]}</tr>
               </td>
               <td className="numberOfStepM">
                 <p>
-                  <tr>{listOfMplier[item * 3 - 2]}</tr>
+                  <tr className="trStyle">{listOfMplier[item * 3 - 2]}</tr>
                 </p>
                 <p>
-                  <tr>{listOfMplier[item * 3 - 1]}</tr>
+                  <tr className="trStyle">{listOfMplier[item * 3 - 1]}</tr>
                 </p>
-                <tr>{listOfMplier[item * 3]}</tr>
+                <tr className="ActiveD">
+                  {lsbM !== undefined
+                    ? lsbM.split("").map((item, index) => {
+                        if (index != 7) {
+                          return <div>{item}</div>;
+                        } else {
+                          return <div className="LSB">{item}</div>;
+                        }
+                      })
+                    : null}
+                </tr>
               </td>
               <td className="numberOfStepM">
                 <p>
-                  <tr>{listOfMcand[item * 3 - 2]}</tr>
+                  <tr className="trStyle">{listOfMcand[item * 3 - 2]}</tr>
                 </p>
                 <p>
-                  {" "}
-                  <tr>{listOfMcand[item * 3 - 1]}</tr>
+                  <tr className="ActiveD">{listOfMcand[item * 3 - 1]}</tr>
                 </p>
-                <tr>{listOfMcand[item * 3]}</tr>
+                <tr className="trStyle">{listOfMcand[item * 3]}</tr>
               </td>
               <td className="numberOfStepM">
                 <p>
-                  <tr>{listOfProd[item * 3 - 2]}</tr>
+                  <tr
+                    className={
+                      listOfAction[item * 3 - 2] === "1b: No operation (LSB=0)"
+                        ? "trStyle"
+                        : "ActiveM"
+                    }
+                  >
+                    {listOfProd[item * 3 - 2]}
+                  </tr>
                 </p>
                 <p>
-                  <tr>{listOfProd[item * 3 - 1]}</tr>
+                  <tr className="trStyle">{listOfProd[item * 3 - 1]}</tr>
                 </p>
-                <tr>{listOfProd[item * 3]}</tr>
+                <tr className="trStyle">{listOfProd[item * 3]}</tr>
               </td>
             </tr>
           );
