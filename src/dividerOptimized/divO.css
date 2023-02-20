@@ -1,0 +1,107 @@
+.mainDO {
+    flex-direction: row;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 100%;
+    min-height: 100vh;
+    background-color: rgb(25, 91, 87);
+  }
+  .mainDO button {
+    width: 200px;
+    height: 100px;
+    font-size: xx-large;
+    border-radius: 5px;
+  }
+  .mainDO button:hover {
+    background-color: rgb(156, 193, 226);
+    color: white;
+  }
+  
+  .table {
+    display: flex;
+    flex-direction: row;
+  }
+  .table div {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .headerDO {
+    background-color: rgb(102, 102, 228);
+  }
+  tr {
+    height: 27px;
+  }
+  tr div {
+    margin: 0px;
+    padding: 0px;
+  }
+  
+  .prdBtnDO {
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+  .numberOfStepDO {
+    height: 50px;
+    border-bottom: 1px solid black;
+    background-color: rgb(253, 253, 253);
+    justify-content: center;
+    align-items: center;
+  }
+  .numberOfStepSDO {
+    height: 50px;
+    border-bottom: 1px solid black;
+    background-color: rgb(253, 253, 253);
+    text-align: center;
+  }
+  
+  .headerActionDO {
+    width: 260px;
+    background-color: rgb(102, 102, 228);
+  }
+  
+  p {
+    border-bottom: 0.5px solid black;
+    /* margin: 0; */
+  }
+  .ActiveDO {
+    display: flex;
+    color: rgb(255, 7, 7);
+    margin: 0px;
+    padding: 0px;
+    align-items: center;
+    justify-content: center;
+  }
+  .prodMSB {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
+  .numberOfStepZeroDO {
+    border-bottom: 1px solid black;
+    background-color: rgb(253, 253, 253);
+    text-align: center;
+  }
+  .prodMSBAction {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: start;
+  }
+  
+  .MSB {
+    border: 3px solid red;
+    border-radius: 50%;
+    height: auto;
+  }
+  .divForMsb {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  

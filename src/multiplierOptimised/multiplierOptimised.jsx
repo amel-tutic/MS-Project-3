@@ -20,7 +20,6 @@ const MultiplierOptimised = () => {
   const [listOfPM, setListOfPM] = useState([]);
   const [listOfMcand, setListOfMcand] = useState([]);
   const [listOfAction, setListOfAction] = useState(["Initial values"]);
-  const [active, setActive] = useState([]);
   let lsbPML = "";
   //define iteration effect
   useEffect(() => {
@@ -62,13 +61,11 @@ const MultiplierOptimised = () => {
       if (steps === 1) {
         if (prodMplier[15] === "0") {
           setListOfAction([...listOfAction, "1b: No operation (LSB = 0)"]);
-          setActive([...active, false]);
         } else {
           setListOfAction([
             ...listOfAction,
             "1a: Prod = Prod + Mcand (LSB = 1)",
           ]);
-          setActive([...active, true]);
 
           //additon, prod=prod+mcand
           prodTemp = prodTemp.map((item, index) => {

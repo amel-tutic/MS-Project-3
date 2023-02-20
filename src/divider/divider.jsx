@@ -141,7 +141,7 @@ const Divider = () => {
       //step two
       if (steps === 2) {
         if (reminder[0] === "1") {
-          //OVDE SI STAOO!!!!!!!!!!!
+          
           setListOfAction([...listOfAction, "2b: Rem<0, R+D , Q<<"]);
           reminderTemp = reminderTemp.map((item, index) => {
             carry = carryTemp;
