@@ -5,12 +5,12 @@ import "./style.css";
 //define multiplier
 const Multiplier = () => {
   //define mcand, mplier, product
-  let Mp = "00001101";
-  let Mc = "0000000000001001";
+  let Ml = "00010011";
+  let Mc = "0000000000011111";
   let P = "0000000000000000";
 
   //define states
-  const [mplier, setMplier] = useState(Mp);
+  const [mplier, setMplier] = useState(Ml);
   const [mcand, setMcand] = useState(Mc);
   const [prod, setProd] = useState(P);
   const [steps, setSteps] = useState(1);
@@ -20,7 +20,6 @@ const Multiplier = () => {
   const [listOfProd, setListOfProd] = useState([]);
   const [tableStep, setTableStep] = useState([]);
   const [listOfAction, setListOfAction] = useState(["Initial values"]);
-  const [active, setActive] = useState([]);
 
   //define iteration effect
   useEffect(() => {
@@ -59,7 +58,6 @@ const Multiplier = () => {
       if (steps === 1) {
         if (mplierTemp[7] === "1") {
           setListOfAction([...listOfAction, "1a: Prod = Prod + Mcand (LSB=1)"]);
-          setActive([...active, true]);
 
           //addition, prod=prod+mcand
           prodTemp = prodTemp.map((item, index) => {
@@ -94,13 +92,12 @@ const Multiplier = () => {
           setProd(prodTemp.reverse().join(""));
         } else {
           setListOfAction([...listOfAction, "1b: No operation (LSB=0)"]);
-          setActive([...active, false]);
         }
       }
 
       //step two
       if (steps === 2) {
-        setListOfAction([...listOfAction, "2: Shift left Multiplicand"]);
+        setListOfAction([...listOfAction, "2: Shif left Multiplicand"]);
 
         //unreverse and shift left mcand
         mcandTemp.reverse();
@@ -110,7 +107,7 @@ const Multiplier = () => {
 
       //step three
       if (steps === 3) {
-        setListOfAction([...listOfAction, "3: Shift right Multiplier"]);
+        setListOfAction([...listOfAction, "3: Shif right Multiplier"]);
 
         //shift right mplier, reset steps
         mplierTemp = "0" + mplierTemp.slice(0, 7).join("");
@@ -128,44 +125,26 @@ const Multiplier = () => {
   return (
     <div className="mainM">
       <table>
-        {/* headers*/}
+        {/* headers and initial values */}
         <th className="headerM">Step</th>
         <th className="headerActionM">Action</th>
         <th className="headerM">Mplier</th>
         <th className="headerM">Mcand</th>
         <th className="headerM">Prod</th>
-
-        {/* initial values */}
         <tr>
-          <td className="numberOfStepS">0</td>
-
-          <td className="numberOfStepM">
+          <td className="numberOfStepZero">0</td>
+          <td className="numberOfStepZero">
             <tr>{listOfAction[0]}</tr>
           </td>
-
-          <td className="numberOfStepM">
-          <tr className="default">
-              {Mp.split("").map((item, index) => {
-                if (index != 7) {
-                  return <div>{item}</div>;
-                } else {
-                  if(item != 0){
-                  return <div className="LSB">{item}</div>;
-                  }
-                  else return <div>{item}</div>;
-                }
-              })}
-            </tr>
+          <td className="numberOfStepZero">
+            <tr>{Ml}</tr>
           </td>
-
-          <td className="numberOfStepM">
+          <td className="numberOfStepZero">
             <tr>{Mc}</tr>
           </td>
-
-          <td className="numberOfStepM">
+          <td className="numberOfStepZero">
             <tr>{P}</tr>
           </td>
-
         </tr>
 
         {/* step by step representation */}
@@ -173,10 +152,7 @@ const Multiplier = () => {
         {tableStep.map((item, index) => {
           return (
             <tr>
-              {/* step */}
               <td className="numberOfStepS">{item}</td>
-
-              {/* action */}
               <td className="numberOfStepM">
                 <p>
                   <tr>{listOfAction[item * 3 - 2]}</tr>
@@ -186,8 +162,6 @@ const Multiplier = () => {
                 </p>
                 <tr>{listOfAction[item * 3]}</tr>
               </td>
-
-              {/* mplier */}
               <td className="numberOfStepM">
                 <p>
                   <tr>{listOfMplier[item * 3 - 2]}</tr>
@@ -195,50 +169,28 @@ const Multiplier = () => {
                 <p>
                   <tr>{listOfMplier[item * 3 - 1]}</tr>
                 </p>
-                <span className="active">
-                <tr className="default">{listOfMplier[item * 3] !== 
-                undefined ? listOfMplier[item * 3].split("").map((item, index) => {
-                        if (index != 7) {
-                          return <div>{item}</div>;
-                        } else {
-                          if (item === "1") {
-                            return <div className="LSB">{item}</div>;
-                          } else return <div>{item}</div>;
-                        }
-                      })
-                    : null}
-                </tr>
-                </span>
+                <tr>{listOfMplier[item * 3]}</tr>
               </td>
-
-              {/* mcand */}
               <td className="numberOfStepM">
                 <p>
                   <tr>{listOfMcand[item * 3 - 2]}</tr>
                 </p>
                 <p>
-                  <tr className="active"><div>{listOfMcand[item * 3 - 1]}</div></tr>
+                  {" "}
+                  <tr>{listOfMcand[item * 3 - 1]}</tr>
                 </p>
                 <tr>{listOfMcand[item * 3]}</tr>
               </td>
-
-              {/* product */}
               <td className="numberOfStepM">
                 <p>
-                <tr>
-                    <div className={listOfAction[item * 3 - 2] !== 
-                      "1b: No operation (LSB=0)"? "active" : "default"}>{listOfProd[item * 3 - 2]}
-                    </div>
-                  </tr>
+                  <tr>{listOfProd[item * 3 - 2]}</tr>
                 </p>
                 <p>
                   <tr>{listOfProd[item * 3 - 1]}</tr>
                 </p>
                 <tr>{listOfProd[item * 3]}</tr>
               </td>
-
             </tr>
-
           );
         })}
       </table>

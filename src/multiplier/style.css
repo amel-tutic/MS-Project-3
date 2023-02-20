@@ -51,31 +51,21 @@
   background-color: rgb(253, 253, 253);
   text-align: center;
 }
+.numberOfStepZero {
+  border-bottom: 1px solid black;
+  background-color: rgb(253, 253, 253);
+  text-align: center;
+}
 
 .headerActionM {
   width: 250px;
   background-color: rgb(102, 102, 228);
 }
+tr {
+  height: 22px;
+}
+
 p {
   border-bottom: 0.5px solid black;
   margin: 0;
-}
-
-.active{
-  display: flex;
-  color: red;
-  align-items: center;
-  justify-content: center;
-}
-
-.default {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.LSB {
-  border: 3px solid red;
-  border-radius: 50%;
-  height: auto; 
 }
