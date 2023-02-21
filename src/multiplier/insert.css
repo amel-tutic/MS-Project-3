@@ -1,0 +1,31 @@
+#main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 100vh;
+  background-color: rgb(25, 91, 87);
+  flex-direction: column;
+}
+.inputDiv {
+  display: flex;
+  width: 70%;
+  justify-content: space-between;
+  align-items: center;
+}
+.inputDiv input {
+  width: 50%;
+  height: 50px;
+  font-size: large;
+}
+
+button {
+  height: 100px;
+  width: 20%;
+  font-size: xx-large;
+  border-radius: 5px;
+}
+button:hover {
+  background-color: rgb(156, 193, 226);
+  color: white;
+}
