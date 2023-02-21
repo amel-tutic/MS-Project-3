@@ -4,45 +4,54 @@ import Multiplier from "./multiplier/multiplier";
 import Divider from "./divider/divider";
 import Home from "./home/home";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import DividerOptimized from "./dividerOptimized/divideroptimized";
+import DividerOptimised from "./dividerOptimised/dividerOptimised";
 import InsertForMultiplier from "./multiplier/insertForMultiplier";
-import InsertForMultiplierOptimized from "./multiplierOptimised/insertForMultiplierOptimized";
+import InsertForMultiplierOptimised from "./multiplierOptimised/insertForMultiplierOptimised";
 import InsertForDivider from "./divider/insertForDivider";
-import InsertForDividerOptimized from "./dividerOptimized/insertForDividerOptimized";
+import InsertForDividerOptimised from "./dividerOptimised/insertForDividerOptimised";
+import SimpleContext from "./simpleContext";
 function App() {
   return (
     <div className="App">
-      <BrowserRouter>
-        <Routes>
-          <Route path="/multiplier" element={<Multiplier />} />
+      <SimpleContext>
+        <BrowserRouter>
+          <Routes>
+            <Route
+              path="/insertForMultiplier/multiplier"
+              element={<Multiplier />}
+            />
 
-          <Route
-            path="/insertForMultiplier"
-            element={<InsertForMultiplier />}
-          />
+            <Route
+              path="/insertForMultiplier"
+              element={<InsertForMultiplier />}
+            />
 
-          <Route
-            path="/multiplierOptimized"
-            element={<MultiplierOptimised />}
-          />
+            <Route
+              path="/insertForMultiplierOptimised/multiplierOptimised"
+              element={<MultiplierOptimised />}
+            />
 
-          <Route
-            path="/insertForMultiplierOptimized"
-            element={<InsertForMultiplierOptimized />}
-          />
-          <Route path="/insertForDivider" element={<InsertForDivider />} />
-          <Route
-            path="/insertForDividerOptimized"
-            element={<InsertForDividerOptimized />}
-          />
+            <Route
+              path="/insertForMultiplierOptimised"
+              element={<InsertForMultiplierOptimised />}
+            />
+            <Route path="/insertForDivider" element={<InsertForDivider />} />
 
-          <Route path="/" element={<Home />} />
+            <Route path="/" element={<Home />} />
 
-          <Route path="/divider" element={<Divider />} />
+            <Route path="/insertForDivider/divider" element={<Divider />} />
 
-          <Route path="/dividerOptimized" element={<DividerOptimized />} />
-        </Routes>
-      </BrowserRouter>
+            <Route
+              path="/insertForDividerOptimised"
+              element={<InsertForDividerOptimised />}
+            />
+            <Route
+              path="/insertForDividerOptimised/dividerOptimised"
+              element={<DividerOptimised />}
+            />
+          </Routes>
+        </BrowserRouter>
+      </SimpleContext>
     </div>
   );
 }

@@ -104,3 +104,8 @@ p {
   justify-content: center;
   align-items: center;
 }
+.homeLink {
+  color: beige !important;
+  font-size: larger;
+  margin-top: 200px;
+}

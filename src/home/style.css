@@ -25,7 +25,7 @@
 .link:hover {
   color: white !important;
 }
-.linkDiv {
+.linkDivH {
   background-color: white;
   border: 1px solid black;
   width: 20%;
@@ -33,7 +33,7 @@
   align-items: center;
   justify-content: center;
 }
-.linkDiv:hover {
+.linkDivH:hover {
   background-color: rgb(156, 193, 226);
   color: white !important;
 }

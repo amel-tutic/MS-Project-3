@@ -29,3 +29,7 @@ button:hover {
   background-color: rgb(156, 193, 226);
   color: white;
 }
+.homeLinkInsert {
+  color: beige !important;
+  font-size: larger !important;
+}

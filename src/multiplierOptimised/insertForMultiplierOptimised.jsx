@@ -1,18 +1,18 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import "./insertD.css";
+import "./insertMo.css";
 import { MyContext } from "../simpleContext";
 import { useContext } from "react";
 
 //bring in context and starting values
-const InsertForDivider = () => {
-  const [quotient, setQuotient] = useState();
-  const [divisor, setDivisor] = useState();
+const InsertForMultiplierOptimised = () => {
+  const [multiplier, setMultiplier] = useState();
+  const [multiplicand, setMultiplicand] = useState();
   const { first, setFirst, second, setSecond } = useContext(MyContext);
-  let quo = "";
-  let quobin = "";
-  let div = "";
-  let divbin = "";
+  let ml = "";
+  let mlbin = "";
+  let mc = "";
+  let mcbin = "";
   const [submit, setSubmit] = useState(false);
 
   //input handler, conversion
@@ -20,24 +20,24 @@ const InsertForDivider = () => {
     e.preventDefault();
     setSubmit(true);
 
-    quobin = parseInt(quo, 10);
-    quobin = quobin.toString(2);
-    let ZeroForQuo = 16 - quobin.length;
-    for (let i = 0; i < ZeroForQuo; i++) {
-      quobin = "0" + quobin;
-    }
-
-    divbin = parseInt(div, 10);
-    divbin = divbin.toString(2);
-    let ZeroForDiv = 8 - divbin.length;
-    for (let i = 0; i < ZeroForDiv; i++) {
-      divbin = "0" + divbin;
+    mlbin = parseInt(ml, 10);
+    mlbin = mlbin.toString(2);
+    let ZeroForMl = 8 - mlbin.length;
+    for (let i = 0; i < ZeroForMl; i++) {
+      mlbin = "0" + mlbin;
     }
     
-    setQuotient(quobin);
-    setFirst(quobin);
-    setDivisor(divbin);
-    setSecond(divbin);
+    mcbin = parseInt(mc, 10);
+    mcbin = mcbin.toString(2);
+    let ZeroForMc = 8 - mcbin.length;
+    for (let i = 0; i < ZeroForMc; i++) {
+      mcbin = "0" + mcbin;
+    }
+    
+    setMultiplier(mlbin);
+    setFirst(mlbin);
+    setMultiplicand(mcbin);
+    setSecond(mcbin);
     console.log(first);
     console.log(second);
   };
@@ -47,7 +47,7 @@ const InsertForDivider = () => {
     setSubmit(false);
   };
 
-  //enter dividend and divisor, check values, handle input & submit
+  //enter mplier and mcand, check values, handle input & submit
   return (
     <div id="main">
       {submit === false ? (
@@ -62,24 +62,24 @@ const InsertForDivider = () => {
         >
           <div className="inputDiv">
             <label htmlFor="Mplier">
-              <h1>Dividend:</h1>
+              <h1>Multiplier:</h1>
             </label>
             <input
               type="text"
               onChange={(e) => {
-                quo = e.target.value;
+                ml = e.target.value;
               }}
             />
           </div>
           <br />
           <div className="inputDiv">
             <label htmlFor="Mcand">
-              <h1>Divisor:</h1>
+              <h1>Multiplicand:</h1>
             </label>
             <input
               type="text"
               onChange={(e) => {
-                div = e.target.value;
+                mc = e.target.value;
               }}
             />
           </div>
@@ -87,8 +87,8 @@ const InsertForDivider = () => {
       ) : (
         <div className="ValidDiv">
           <h1>Are values correct?</h1>
-          <h3>Dividend: {quotient}</h3>
-          <h3>Divisor: {divisor}</h3>
+          <h3>Multiplier: {multiplier}</h3>
+          <h3>Multiplicand: {multiplicand}</h3>
         </div>
       )}
 
@@ -107,7 +107,7 @@ const InsertForDivider = () => {
       ) : (
         <div>
           <div className="linkDiv">
-            <Link className="link" to="divider">
+            <Link className="link" to="multiplierOptimised">
               <h1>Yes</h1>
             </Link>
           </div>
@@ -116,11 +116,9 @@ const InsertForDivider = () => {
           </button>
         </div>
       )}
-      <Link className="homeLinkInsert" to="/">
-        Back to home
-      </Link>
+      <Link className="homeLinkInsert">Back to home</Link>
     </div>
   );
 };
 
-export default InsertForDivider;
+export default InsertForMultiplierOptimised;

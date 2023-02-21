@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import "./insertD.css";
+import "./insertDo.css";
 import { MyContext } from "../simpleContext";
 import { useContext } from "react";
 
 //bring in context and starting values
-const InsertForDivider = () => {
+const InsertForDividerOptimised = () => {
   const [quotient, setQuotient] = useState();
   const [divisor, setDivisor] = useState();
   const { first, setFirst, second, setSecond } = useContext(MyContext);
@@ -22,7 +22,7 @@ const InsertForDivider = () => {
 
     quobin = parseInt(quo, 10);
     quobin = quobin.toString(2);
-    let ZeroForQuo = 16 - quobin.length;
+    let ZeroForQuo = 8 - quobin.length;
     for (let i = 0; i < ZeroForQuo; i++) {
       quobin = "0" + quobin;
     }
@@ -33,7 +33,7 @@ const InsertForDivider = () => {
     for (let i = 0; i < ZeroForDiv; i++) {
       divbin = "0" + divbin;
     }
-    
+
     setQuotient(quobin);
     setFirst(quobin);
     setDivisor(divbin);
@@ -107,7 +107,7 @@ const InsertForDivider = () => {
       ) : (
         <div>
           <div className="linkDiv">
-            <Link className="link" to="divider">
+            <Link className="link" to="dividerOptimised">
               <h1>Yes</h1>
             </Link>
           </div>
@@ -116,11 +116,9 @@ const InsertForDivider = () => {
           </button>
         </div>
       )}
-      <Link className="homeLinkInsert" to="/">
-        Back to home
-      </Link>
+      <Link className="homeLinkInsert">Back to home</Link>
     </div>
   );
 };
 
-export default InsertForDivider;
+export default InsertForDividerOptimised;

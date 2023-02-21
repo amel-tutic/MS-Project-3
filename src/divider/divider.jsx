@@ -1,11 +1,18 @@
 import React, { useEffect, useState } from "react";
 import "./div.css";
+import { MyContext } from "../simpleContext";
+import { useContext } from "react";
+import { Link } from "react-router-dom";
 
+//bring in context, define divider
 const Divider = () => {
-  //define quotient,divisor,reminder
+  const { first, second } = useContext(MyContext);
+  //define quotient, divisor, remainder
   let Q = "00000000 ";
-  let D = "0001110100000000";
-  let R = "0000000001001110";
+  let D = second + "00000000";
+  let R = first;
+
+  //number 1, for two's complement, reversed for the sake of easier addition
   let ONE = [
     "1",
     "0",
@@ -24,24 +31,26 @@ const Divider = () => {
     "0",
     "0",
   ];
+  
   //define states
   const [quotient, setQuotient] = useState(Q);
   const [divisor, setDivisor] = useState(D);
-  const [reminder, setReminder] = useState(R);
+  const [remainder, setRemainder] = useState(R);
   const [listOfQuotient, setListOfQuotient] = useState([]);
   const [listOfDivisor, setListOfDivisor] = useState([]);
-  const [listOfReminder, setListOfReminder] = useState([]);
+  const [listOfRemainder, setListOfRemainder] = useState([]);
   const [listOfAction, setListOfAction] = useState(["Initial values"]);
   const [steps, setSteps] = useState(1);
   const [iteration, setIteration] = useState(1);
   const [tableStep, setTableStep] = useState([]);
   let msbR = "";
+
   //define iteration effect
   useEffect(() => {
     if (iteration !== 0) {
       setListOfQuotient([...listOfQuotient, quotient]);
       setListOfDivisor([...listOfDivisor, divisor]);
-      setListOfReminder([...listOfReminder, reminder]);
+      setListOfRemainder([...listOfRemainder, remainder]);
     }
     if ((iteration + 1) % 3 === 0 && iteration < 28) {
       setTableStep([...tableStep, (iteration + 1) / 3]);
@@ -58,25 +67,29 @@ const Divider = () => {
 
       let quotientTemp = quotient;
       let divisorTemp = divisor;
-      let reminderTemp = reminder;
+      let remainderTemp = remainder;
       let carry = 0;
       let carryTemp = 0;
 
       //split & reverse for bit by bit checking & addition
-      reminderTemp = reminderTemp.split("");
+      remainderTemp = remainderTemp.split("");
       divisorTemp = divisorTemp.split("");
       quotientTemp = quotientTemp.split("");
       divisorTemp.reverse();
-      reminderTemp.reverse();
+      remainderTemp.reverse();
 
       //step one
       if (steps === 1) {
         setListOfAction([...listOfAction, "1: Rem = Rem - Div "]);
+
+        //one's complement
         divisorTemp = divisorTemp.map((item) => {
           if (item === "0") {
             return "1";
           } else return "0";
         });
+
+        //two's complement
         divisorTemp = divisorTemp.map((item, index) => {
           carry = carryTemp;
           carryTemp = 0;
@@ -105,8 +118,9 @@ const Divider = () => {
             }
           }
         });
-        //rem=rem-div
-        reminderTemp = reminderTemp.map((item, index) => {
+
+        //rem = rem - div
+        remainderTemp = remainderTemp.map((item, index) => {
           carry = carryTemp;
           carryTemp = 0;
 
@@ -134,16 +148,16 @@ const Divider = () => {
             }
           }
         });
-        //unreverse and join reminder bits
-        setReminder(reminderTemp.reverse().join(""));
+
+        //unreverse and join remainder bits
+        setRemainder(remainderTemp.reverse().join(""));
       }
 
       //step two
       if (steps === 2) {
-        if (reminder[0] === "1") {
-          
+        if (remainder[0] === "1") {
           setListOfAction([...listOfAction, "2b: Rem<0, R+D , Q<<"]);
-          reminderTemp = reminderTemp.map((item, index) => {
+          remainderTemp = remainderTemp.map((item, index) => {
             carry = carryTemp;
             carryTemp = 0;
 
@@ -171,8 +185,9 @@ const Divider = () => {
               }
             }
           });
-          //unreverse and join reminder bits
-          setReminder(reminderTemp.reverse().join(""));
+
+          //unreverse and join remainder bits
+          setRemainder(remainderTemp.reverse().join(""));
 
           quotientTemp = quotientTemp.slice(1, 8).join("") + "0";
           setQuotient(quotientTemp);
@@ -185,8 +200,9 @@ const Divider = () => {
 
       //step three
       if (steps === 3) {
-        setListOfAction([...listOfAction, "3: Shif right Divisor"]);
+        setListOfAction([...listOfAction, "3: Shift right Divisor"]);
         divisorTemp.reverse();
+
         //shift right mplier, reset steps
         divisorTemp = "0" + divisorTemp.slice(0, 15).join("");
         setDivisor(divisorTemp);
@@ -198,6 +214,8 @@ const Divider = () => {
     //next iteration
     setIteration(iteration + 1);
   }
+
+  //visual representation
   return (
     //   let Q = "00000000 ";
     // let D = "0001110100000000";
@@ -210,7 +228,7 @@ const Divider = () => {
         <th className="headerActionD">Action</th>
         <th className="headerD">Quotient</th>
         <th className="headerD">Divisor</th>
-        <th className="headerD">Reminder</th>
+        <th className="headerD">Remainder</th>
         <tr>
           <td className="numberOfStepZeroD">0</td>
           <td className="numberOfStepZeroD">
@@ -228,13 +246,16 @@ const Divider = () => {
         </tr>
 
         {/* step by step representation */}
-        {/* formulas for iteration according to steps -> [step*2-1, step*2] */}
+        {/* formulas for iteration according to steps -> [step*3-2, step*3-1, step*3] */}
         {tableStep.map((item, index) => {
-          msbR = listOfReminder[item];
+          msbR = listOfRemainder[item*3-2];
 
           return (
             <tr>
+              {/* step */}
               <td className="numberOfStepSD">{item}</td>
+
+              {/* action */}
               <td className="numberOfStepD">
                 <p>
                   <tr className="prodMSBAction">
@@ -250,6 +271,8 @@ const Divider = () => {
                   <div>{listOfAction[item * 3]}</div>
                 </tr>
               </td>
+
+              {/* quotient */}
               <td className="numberOfStepD">
                 <p>
                   <tr className="prodMSB">
@@ -272,6 +295,8 @@ const Divider = () => {
                   <div>{listOfQuotient[item * 3]}</div>
                 </tr>
               </td>
+
+              {/* divisor */}
               <td className="numberOfStepD">
                 <p>
                   <tr className="prodMSB">
@@ -285,7 +310,7 @@ const Divider = () => {
                 </p>
                 <tr
                   className={
-                    listOfAction[item * 3] === "3: Shif right Divisor"
+                    listOfAction[item * 3] === "3: Shift right Divisor"
                       ? "ActiveD"
                       : "prodLSB"
                   }
@@ -293,6 +318,8 @@ const Divider = () => {
                   <div>{listOfDivisor[item * 3]}</div>
                 </tr>
               </td>
+
+              {/* remainder */}
               <td className="numberOfStepD">
                 <p>
                   <tr className="ActiveD">
@@ -317,13 +344,14 @@ const Divider = () => {
                         : "prodMSB"
                     }
                   >
-                    {listOfReminder[item * 3 - 1]}
+                    {listOfRemainder[item * 3 - 1]}
                   </tr>
                 </p>
                 <tr className="prodMSB">
-                  <div>{listOfReminder[item * 3]}</div>
+                  <div>{listOfRemainder[item * 3]}</div>
                 </tr>
               </td>
+
             </tr>
           );
         })}
@@ -334,8 +362,14 @@ const Divider = () => {
         <h1>Operation: {listOfAction[listOfAction.length - 1]}</h1>
         <h1>Quotient: {quotient}</h1>
         <h1>Divisor: {divisor}</h1>
-        <h1>Reminder: {reminder}</h1>
-        <button onClick={Step}>Next</button>
+        <h1>Remainder: {remainder}</h1>
+        {iteration > 27 ? (
+          <Link className="homeLink" to="/">
+            Back to home
+          </Link>
+        ) : (
+          <button onClick={Step}>Next</button>
+        )}
       </div>
     </div>
     // <div>
@@ -345,7 +379,7 @@ const Divider = () => {
     //   <br />
     //   quotient:{quotient} <br /> <br />
     //   divisor:{divisor} <br /> <br />
-    //   reminder:{reminder} <br />
+    //   remainder:{remainder} <br />
     //   <br />
     //   <br />
     //   <br />

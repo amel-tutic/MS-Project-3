@@ -1,12 +1,17 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import "./style.css";
+import { MyContext } from "../simpleContext";
+import { useContext } from "react";
+import { Link } from "react-router-dom";
 
-//define multiplierOptimised
+//bring in context, define multiplierOptimised
 const MultiplierOptimised = () => {
-  let Mc = "00000010";
+  const { first, setFirst, second, setSecond } = useContext(MyContext);
+  //define mplier, mcand, product, prod/mplier
+  let Ml = first;
+  let Mc = second;
   let P = "00000000";
-  let Ml = "00011001";
   let PML = P + Ml;
 
   //define states
@@ -21,6 +26,7 @@ const MultiplierOptimised = () => {
   const [listOfMcand, setListOfMcand] = useState([]);
   const [listOfAction, setListOfAction] = useState(["Initial values"]);
   let lsbPML = "";
+  
   //define iteration effect
   useEffect(() => {
     if (iteration !== 0) {
@@ -159,7 +165,10 @@ const MultiplierOptimised = () => {
 
           return (
             <tr>
+              {/* step */}
               <td className="numberOfStepS">{item}</td>
+
+              {/* action */}
               <td className="numberOfStep">
                 <p>
                   <tr className="prodLSBAction">
@@ -170,6 +179,8 @@ const MultiplierOptimised = () => {
                   <div>{listOfAction[item * 2]}</div>
                 </tr>
               </td>
+
+              {/* mcand */}
               <td className="numberOfStep">
                 <p>
                   <tr className="prodLSB">
@@ -180,6 +191,8 @@ const MultiplierOptimised = () => {
                   <div>{listOfMcand[item * 2]}</div>
                 </tr>
               </td>
+
+              {/* prod/mplier */}
               <td className="numberOfStep">
                 <p>
                   <tr
@@ -207,6 +220,7 @@ const MultiplierOptimised = () => {
                     : null}
                 </tr>
               </td>
+              
             </tr>
           );
         })}
@@ -217,7 +231,14 @@ const MultiplierOptimised = () => {
         <h1>Operation: {listOfAction[listOfAction.length - 1]}</h1>
         <h1>Multiplicand: {mcand}</h1>
         <h1>Product/Multiplier: {prodMplier}</h1>
-        <button onClick={Step}>Next</button>
+
+        {iteration > 16 ? (
+          <Link className="homeLink" to="/">
+            Back to home
+          </Link>
+        ) : (
+          <button onClick={Step}>Next</button>
+        )}
       </div>
     </div>
   );

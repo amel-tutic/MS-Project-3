@@ -19,13 +19,46 @@
   font-size: large;
 }
 
-button {
+.linkBTN {
   height: 100px;
   width: 20%;
   font-size: xx-large;
   border-radius: 5px;
 }
-button:hover {
+.linkBTN:hover {
   background-color: rgb(156, 193, 226);
   color: white;
+}
+
+.BTN {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  border: none;
+  width: 150px;
+  height: 100px;
+  border-radius: 10px;
+}
+
+.linkDiv {
+  height: 100px;
+  margin-bottom: 5px;
+  border: none;
+  border-radius: 10px;
+  background-color: white;
+  width: 150px;
+}
+.linkDiv:hover {
+  color: rgb(255, 255, 255);
+  background-color: rgb(156, 193, 226);
+}
+.link {
+  color: black !important;
+  justify-content: center;
+  align-items: center;
+}
+.homeLinkInsert {
+  color: beige !important;
+  font-size: larger;
 }

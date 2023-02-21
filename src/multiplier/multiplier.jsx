@@ -1,12 +1,16 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import "./style.css";
+import { MyContext } from "../simpleContext";
+import { useContext } from "react";
+import { Link } from "react-router-dom";
 
-//define multiplier
+//bring in context, define multiplier
 const Multiplier = () => {
+  const { first, setFirst, second, setSecond } = useContext(MyContext);
   //define mcand, mplier, product
-  let Ml = "00010011";
-  let Mc = "0000000000011111";
+  let Ml = first;
+  let Mc = second;
   let P = "0000000000000000";
 
   //define states
@@ -153,7 +157,10 @@ const Multiplier = () => {
           let lsbM = listOfMplier[item * 3];
           return (
             <tr>
+              {/* step */}
               <td className="numberOfStepS">{item}</td>
+
+              {/* action */}
               <td className="numberOfStepM">
                 <p>
                   <tr className="trStyle">{listOfAction[item * 3 - 2]}</tr>
@@ -163,6 +170,8 @@ const Multiplier = () => {
                 </p>
                 <tr className="trStyle">{listOfAction[item * 3]}</tr>
               </td>
+
+              {/* mplier */}
               <td className="numberOfStepM">
                 <p>
                   <tr className="trStyle">{listOfMplier[item * 3 - 2]}</tr>
@@ -182,6 +191,8 @@ const Multiplier = () => {
                     : null}
                 </tr>
               </td>
+
+              {/* mcand */}
               <td className="numberOfStepM">
                 <p>
                   <tr className="trStyle">{listOfMcand[item * 3 - 2]}</tr>
@@ -191,6 +202,8 @@ const Multiplier = () => {
                 </p>
                 <tr className="trStyle">{listOfMcand[item * 3]}</tr>
               </td>
+
+              {/* product */}
               <td className="numberOfStepM">
                 <p>
                   <tr
@@ -208,6 +221,7 @@ const Multiplier = () => {
                 </p>
                 <tr className="trStyle">{listOfProd[item * 3]}</tr>
               </td>
+              
             </tr>
           );
         })}
@@ -222,7 +236,13 @@ const Multiplier = () => {
         <br />
         <h1>Product: {prod}</h1>
         <br />
-        <button onClick={Step}>Next</button>
+        {iteration > 24 ? (
+          <Link className="homeLink" to="/">
+            Back to home
+          </Link>
+        ) : (
+          <button onClick={Step}>Next</button>
+        )}
       </div>
     </div>
   );

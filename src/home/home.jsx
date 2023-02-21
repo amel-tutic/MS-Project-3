@@ -6,24 +6,24 @@ const Home = () => {
   return (
     <div className="homeMain">
       <div className="allLinks">
-        <div className="linkDiv">
+        <div className="linkDivH">
           <Link className="link" to="insertForMultiplier">
             <h3>Multiplier</h3>
           </Link>
         </div>
-        <div className="linkDiv">
-          <Link className="link" to="insertForMultiplierOptimized">
-            <h3>Multiplier Optimized</h3>
+        <div className="linkDivH">
+          <Link className="link" to="insertForMultiplierOptimised">
+            <h3>Multiplier Optimised</h3>
           </Link>
         </div>
-        <div className="linkDiv">
+        <div className="linkDivH">
           <Link className="link" to="insertForDivider">
             <h3>Divider</h3>
           </Link>
         </div>
-        <div className="linkDiv">
-          <Link className="link" to="insertForDividerOptimized">
-            <h3>Divider Optimized</h3>
+        <div className="linkDivH">
+          <Link className="link" to="insertForDividerOptimised">
+            <h3>Divider Optimised</h3>
           </Link>
         </div>
       </div>

@@ -1,13 +1,20 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import "./divO.css";
+import { MyContext } from "../simpleContext";
+import { useContext } from "react";
+import { Link } from "react-router-dom";
 
-//define multiplierOptimised
+//bring in context, define dividerOptimised
 const DividerOptimised = () => {
-  let Q = "10000111";
-  let D = "00100111";
+  const { first, setFirst, second, setSecond } = useContext(MyContext);
+  //define quotient, divisor, remainder
+  let Q = first;
+  let D = second;
   let R = "00000000";
   let RQ = R + Q;
+
+  //number 1, for two's complement, reversed for the sake of easier addition
   let ONE = [
     "1",
     "0",
@@ -30,7 +37,7 @@ const DividerOptimised = () => {
   //define states
   const [quotient, setQuotient] = useState(Q);
   const [divisor, setDivisor] = useState(D);
-  const [reminder, setReminder] = useState(R);
+  const [remainder, setRemainder] = useState(R);
   const [RemQuo, setRemQuo] = useState(RQ);
   const [steps, setSteps] = useState(1);
   const [iteration, setIteration] = useState(1);
@@ -39,6 +46,7 @@ const DividerOptimised = () => {
   const [listOfRemQuo, setListOfRemQuo] = useState([]);
   const [listOfAction, setListOfAction] = useState(["Initial values"]);
   let lsbRQ = "";
+
   //define iteration effect
   useEffect(() => {
     setListOfRemQuo([...listOfRemQuo, RemQuo]);
@@ -49,9 +57,9 @@ const DividerOptimised = () => {
     }
   }, [iteration]);
 
-  //define effect for prod and mplier concatenation
+  //define effect for remainder and quotient concatenation
   useEffect(() => {
-    setRemQuo(reminder + quotient);
+    setRemQuo(remainder + quotient);
   }, []);
 
   //helper for reseting steps
@@ -63,7 +71,7 @@ const DividerOptimised = () => {
       console.log(iteration);
 
       let divisorTemp = divisor;
-      let reminderTemp = reminder;
+      let remainderTemp = remainder;
 
       let carry = 0;
       let carryTemp = 0;
@@ -71,16 +79,16 @@ const DividerOptimised = () => {
       //split & reverse for bit by bit checking & addition
       divisorTemp = divisorTemp.split("");
       divisorTemp.reverse();
-      reminderTemp = reminderTemp.split("");
-      reminderTemp.reverse();
+      remainderTemp = remainderTemp.split("");
+      remainderTemp.reverse();
 
       //step one
       if (steps === 1) {
-        setListOfAction([...listOfAction, "R<<"]);
+        setListOfAction([...listOfAction, "1: R<<"]);
 
         let RemQuoTemp = RemQuo.split("");
         RemQuoTemp = RemQuoTemp.slice(1, 16).join("") + "0";
-        setReminder(RemQuoTemp.slice(0, 8));
+        setRemainder(RemQuoTemp.slice(0, 8));
         setQuotient(RemQuoTemp.slice(8));
         setRemQuo(RemQuoTemp);
       }
@@ -88,12 +96,15 @@ const DividerOptimised = () => {
       //step two
       if (steps === 2) {
         setListOfAction([...listOfAction, "2: Rem = Rem - Div"]);
+
+        //one's complement
         divisorTemp = divisorTemp.map((item) => {
           if (item === "0") {
             return "1";
           } else return "0";
         });
 
+        //two's complement
         divisorTemp = divisorTemp.map((item, index) => {
           carry = carryTemp;
           carryTemp = 0;
@@ -123,7 +134,8 @@ const DividerOptimised = () => {
           }
         });
 
-        reminderTemp = reminderTemp.map((item, index) => {
+        //rem = rem - div
+        remainderTemp = remainderTemp.map((item, index) => {
           carry = carryTemp;
           carryTemp = 0;
 
@@ -152,23 +164,29 @@ const DividerOptimised = () => {
           }
         });
 
-        //unreverse and join reminder bits
-        setReminder(reminderTemp.reverse().join(""));
+        //unreverse and join remainder bits
+        setRemainder(remainderTemp.reverse().join(""));
 
-        setRemQuo(reminderTemp.join("") + quotient);
+        setRemQuo(remainderTemp.join("") + quotient);
       }
-      if (steps === 3) {
-        console.log(reminderTemp);
 
-        if (reminderTemp[7] === "0") {
-          setListOfAction([...listOfAction, "R>0 , R0 = 1"]);
+      //step three
+      if (steps === 3) {
+        console.log(remainderTemp);
+
+        //r > 0
+        if (remainderTemp[7] === "0") {
+          setListOfAction([...listOfAction, "3a: R>0 , R0 = 1"]);
           let RemQuoTemp = RemQuo;
           RemQuoTemp = RemQuoTemp.split("").reverse();
           RemQuoTemp[0] = "1";
           setRemQuo(RemQuoTemp.reverse().join(""));
-        } else {
-          setListOfAction([...listOfAction, "R<0 , R + D"]);
-          reminderTemp = reminderTemp.map((item, index) => {
+        } 
+        
+        // r < 0
+        else {
+          setListOfAction([...listOfAction, "3b: R<0 , R + D"]);
+          remainderTemp = remainderTemp.map((item, index) => {
             carry = carryTemp;
             carryTemp = 0;
 
@@ -196,9 +214,11 @@ const DividerOptimised = () => {
               }
             }
           });
-          reminderTemp = reminderTemp.reverse().join("");
-          setReminder(reminderTemp);
-          setRemQuo(reminderTemp + quotient);
+
+          //unreverse and join remainder bits
+          remainderTemp = remainderTemp.reverse().join("");
+          setRemainder(remainderTemp);
+          setRemQuo(remainderTemp + quotient);
         }
         step = 0;
       }
@@ -218,7 +238,7 @@ const DividerOptimised = () => {
         <th className="headerDO">Step</th>
         <th className="headerActionDO">Action</th>
         <th className="headerDO">Divisor</th>
-        <th className="headerDO">Reminder/Quotient</th>
+        <th className="headerDO">Remainder/Quotient</th>
         <tr>
           <td className="numberOfStepZeroDO">0</td>
           <td className="numberOfStepZeroDO">
@@ -241,13 +261,16 @@ const DividerOptimised = () => {
         </tr>
 
         {/* step by step representation */}
-        {/* formulas for iteration according to steps -> [step*2-1, step*2] */}
+        {/* formulas for iteration according to steps -> [step*3-2, step*3-1, step*3] */}
         {tableStep.map((item, index) => {
           lsbRQ = listOfRemQuo[item * 3 - 1];
 
           return (
             <tr>
+              {/* step */}
               <td className="numberOfStepSDO">{item}</td>
+
+              {/* action */}
               <td className="numberOfStepDO">
                 <p>
                   <tr className="prodMSBAction">
@@ -263,6 +286,8 @@ const DividerOptimised = () => {
                   <div>{listOfAction[item * 3]}</div>
                 </tr>
               </td>
+
+              {/* divisor */}
               <td className="numberOfStepDO">
                 <p>
                   <tr className="prodMSB">
@@ -278,6 +303,8 @@ const DividerOptimised = () => {
                   <div>{listOfDivisor[item * 3]}</div>
                 </tr>
               </td>
+
+              {/* rem/quo */}
               <td className="numberOfStepDO">
                 <p>
                   <tr className="prodMSB">
@@ -299,7 +326,7 @@ const DividerOptimised = () => {
                 </p>
                 <tr
                   className={
-                    listOfAction[item * 3] === "R>0 , R0 = 1"
+                    listOfAction[item * 3] === "3a: R>0 , R0 = 1"
                       ? "ActiveDO"
                       : "prodMSB"
                   }
@@ -307,6 +334,7 @@ const DividerOptimised = () => {
                   <div>{listOfRemQuo[item * 3]}</div>
                 </tr>
               </td>
+              
             </tr>
           );
         })}
@@ -316,8 +344,14 @@ const DividerOptimised = () => {
       <div className="prdBtnDO">
         <h1>Operation: {listOfAction[listOfAction.length - 1]}</h1>
         <h1>Divisor: {divisor}</h1>
-        <h1>Reminder/Quotient: {RemQuo}</h1>
-        <button onClick={Step}>Next</button>
+        <h1>Remainder/Quotient: {RemQuo}</h1>
+        {iteration > 24 ? (
+          <Link className="homeLink" to="/">
+            Back to home
+          </Link>
+        ) : (
+          <button onClick={Step}>Next</button>
+        )}
       </div>
     </div>
   );
