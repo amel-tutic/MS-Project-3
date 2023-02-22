@@ -8,22 +8,22 @@ const Home = () => {
       <div className="allLinks">
         <div className="linkDivH">
           <Link className="link" to="insertForMultiplier">
-            <h3>Multiplier</h3>
+            <h3>Multiplication</h3>
           </Link>
         </div>
         <div className="linkDivH">
           <Link className="link" to="insertForMultiplierOptimised">
-            <h3>Multiplier Optimised</h3>
+            <h3>Optimised Multiplication</h3>
           </Link>
         </div>
         <div className="linkDivH">
           <Link className="link" to="insertForDivider">
-            <h3>Divider</h3>
+            <h3>Division</h3>
           </Link>
         </div>
         <div className="linkDivH">
           <Link className="link" to="insertForDividerOptimised">
-            <h3>Divider Optimised</h3>
+            <h3>Optimised Division</h3>
           </Link>
         </div>
       </div>
