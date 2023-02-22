@@ -116,7 +116,7 @@ const InsertForMultiplierOptimised = () => {
           </button>
         </div>
       )}
-      <Link className="homeLinkInsert">Back to home</Link>
+      <Link className="homeLinkInsert" to="/">Back to home</Link>
     </div>
   );
 };
