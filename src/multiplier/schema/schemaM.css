@@ -1,0 +1,82 @@
+.valGreen {
+  font-size: 17px;
+  fill: rgb(13, 255, 21);
+  stroke: rgb(13, 255, 21);
+}
+.val {
+  font-size: 17px;
+}
+.valRed {
+  font-size: 17px;
+  fill: red;
+  stroke: red;
+}
+.valBlack {
+  font-size: 17px;
+  fill: black;
+  stroke: black;
+}
+.valOrange {
+  font-size: 17px;
+  fill: rgb(255, 130, 13);
+  stroke: rgb(255, 130, 13);
+}
+.controlTestRed {
+  stroke: red;
+
+  filter: drop-shadow(1px 1px 5px red);
+}
+
+.controlTestGreen {
+  stroke: rgb(13, 255, 21);
+  filter: drop-shadow(1px 1px 10px rgb(13, 255, 21));
+}
+.controlTestWhite {
+  stroke: white;
+}
+.controlTestOrange {
+  stroke: rgb(255, 130, 13);
+  filter: drop-shadow(1px 1px 10px rgb(255, 130, 13));
+}
+.controlTestBlack {
+  stroke: rgb(2, 2, 2);
+  filter: drop-shadow(1px 1px 10px rgb(2, 2, 2));
+}
+.arrowsRed {
+  fill: red;
+}
+.arrowsWhite {
+  fill: white;
+}
+.arrowsOrange {
+  fill: rgb(255, 130, 13);
+}
+.arrowsGreen {
+  fill: rgb(13, 255, 21);
+}
+.arrowsBlack {
+  fill: rgb(2, 2, 2);
+}
+.TextRed {
+  fill: red;
+  stroke: #ff0000;
+  font-size: 23px;
+}
+.TextGreen {
+  fill: rgb(13, 255, 21);
+  stroke: rgb(13, 255, 21);
+  font-size: 23px;
+}
+.TextBlack {
+  fill: black;
+  stroke: black;
+  font-size: 23px;
+}
+.TextWhite {
+  fill: white;
+
+  font-size: 23px;
+}
+.Text {
+  font-size: 23px;
+}

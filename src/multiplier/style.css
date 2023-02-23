@@ -1,9 +1,11 @@
 .mainM {
   flex-direction: row;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-around;
   align-items: center;
-  width: 100%;
+  padding-left: 10px;
+  padding-right: 10px;
+  max-width: 100%;
   min-height: 100vh;
   background-color: rgb(25, 91, 87);
 }
@@ -63,6 +65,7 @@
 }
 tr {
   height: 22px;
+  font-size: 15px;
 }
 
 p {
@@ -88,4 +91,9 @@ p {
   align-items: center;
   margin: 0;
   padding: 0;
+}
+.homeLinkM {
+  font-size: larger !important;
+  color: aliceblue !important;
+  margin-top: 100px;
 }

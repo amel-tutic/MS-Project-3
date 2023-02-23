@@ -6,6 +6,10 @@ export const MyContext = React.createContext();
 const SimpleContext = (props) => {
   const [first, setFirst] = useState("");
   const [second, setSecond] = useState("");
+  const [firstCurr, setFirstCurr] = useState("");
+  const [secondCurr, setSecondCurr] = useState("");
+  const [prodCurr, setProdCurr] = useState("");
+  const [actionCurr, setActionCurr] = useState("");
 
   return (
     <MyContext.Provider
@@ -14,6 +18,14 @@ const SimpleContext = (props) => {
         setFirst,
         second,
         setSecond,
+        firstCurr,
+        setFirstCurr,
+        secondCurr,
+        setSecondCurr,
+        prodCurr,
+        setProdCurr,
+        actionCurr,
+        setActionCurr,
       }}
     >
       {props.children}

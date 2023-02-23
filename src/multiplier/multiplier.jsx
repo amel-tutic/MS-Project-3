@@ -4,14 +4,29 @@ import "./style.css";
 import { MyContext } from "../simpleContext";
 import { useContext } from "react";
 import { Link } from "react-router-dom";
+import SchemaM from "./schema/schemaM";
 
 //bring in context, define multiplier
 const Multiplier = () => {
-  const { first, setFirst, second, setSecond } = useContext(MyContext);
+  const {
+    first,
+    second,
+    prodCurr,
+    setFirstCurr,
+    setSecondCurr,
+    setProdCurr,
+    setActionCurr,
+  } = useContext(MyContext);
   //define mcand, mplier, product
   let Ml = first;
   let Mc = second;
   let P = "0000000000000000";
+  useEffect(() => {
+    setFirstCurr(Ml);
+    setSecondCurr(Mc);
+    setProdCurr(P);
+    setActionCurr("initial values");
+  }, []);
 
   //define states
   const [mplier, setMplier] = useState(Ml);
@@ -39,7 +54,13 @@ const Multiplier = () => {
 
   //helper for reseting steps
   let step = steps;
+  function ToEnd() {
+    setTimeout(cons, 2000);
+  }
 
+  function cons() {
+    console.log("mirza");
+  }
   //function for a whole step
   function Step() {
     if (iteration <= 24) {
@@ -62,7 +83,7 @@ const Multiplier = () => {
       if (steps === 1) {
         if (mplierTemp[7] === "1") {
           setListOfAction([...listOfAction, "1a: Prod = Prod + Mcand (LSB=1)"]);
-
+          setActionCurr("Prod = Prod + Mcand");
           //addition, prod=prod+mcand
           prodTemp = prodTemp.map((item, index) => {
             carry = carryTemp;
@@ -94,30 +115,34 @@ const Multiplier = () => {
           });
           //unreverse and join product bits
           setProd(prodTemp.reverse().join(""));
+          setProdCurr(prodTemp.join(""));
         } else {
           setListOfAction([...listOfAction, "1b: No operation (LSB=0)"]);
+          setActionCurr("No operation");
         }
       }
 
       //step two
       if (steps === 2) {
-        setListOfAction([...listOfAction, "2: Shif left Multiplicand"]);
-
+        setListOfAction([...listOfAction, "2: Shift left Multiplicand"]);
+        setActionCurr("Shift left Multiplicand");
         //unreverse and shift left mcand
         mcandTemp.reverse();
         mcandTemp = mcandTemp.slice(1).join("") + "0";
+        setSecondCurr(mcandTemp);
         setMcand(mcandTemp);
       }
 
       //step three
       if (steps === 3) {
-        setListOfAction([...listOfAction, "3: Shif right Multiplier"]);
-
+        setListOfAction([...listOfAction, "3: Shift right Multiplier"]);
+        setActionCurr("Shift right Multiplier");
         //shift right mplier, reset steps
         mplierTemp = "0" + mplierTemp.slice(0, 7).join("");
+        setFirstCurr(mplierTemp);
         setMplier(mplierTemp);
         step = 0;
-        setTableStep([...tableStep]);
+        // setTableStep([...tableStep]);
       }
       setSteps(step + 1);
     }
@@ -138,16 +163,24 @@ const Multiplier = () => {
         <tr>
           <td className="numberOfStepZero">0</td>
           <td className="numberOfStepZero">
-            <tr>{listOfAction[0]}</tr>
+            <tr className="trStyle">{listOfAction[0]}</tr>
           </td>
           <td className="numberOfStepZero">
-            <tr>{Ml}</tr>
+            <tr className="trStyle">
+              {Ml.split("").map((item, index) => {
+                if (index != 7) {
+                  return <div>{item}</div>;
+                } else {
+                  return <div className="LSB">{item}</div>;
+                }
+              })}
+            </tr>
           </td>
           <td className="numberOfStepZero">
-            <tr>{Mc}</tr>
+            <tr className="trStyle">{Mc}</tr>
           </td>
           <td className="numberOfStepZero">
-            <tr>{P}</tr>
+            <tr className="trStyle">{P}</tr>
           </td>
         </tr>
 
@@ -180,15 +213,17 @@ const Multiplier = () => {
                   <tr className="trStyle">{listOfMplier[item * 3 - 1]}</tr>
                 </p>
                 <tr className="ActiveD">
-                  {lsbM !== undefined
-                    ? lsbM.split("").map((item, index) => {
-                        if (index != 7) {
-                          return <div>{item}</div>;
-                        } else {
-                          return <div className="LSB">{item}</div>;
-                        }
-                      })
-                    : null}
+                  {item !== 8
+                    ? lsbM !== undefined
+                      ? lsbM.split("").map((item, index) => {
+                          if (index != 7) {
+                            return <div>{item}</div>;
+                          } else {
+                            return <div className="LSB">{item}</div>;
+                          }
+                        })
+                      : null
+                    : lsbM}
                 </tr>
               </td>
 
@@ -221,7 +256,6 @@ const Multiplier = () => {
                 </p>
                 <tr className="trStyle">{listOfProd[item * 3]}</tr>
               </td>
-              
             </tr>
           );
         })}
@@ -229,15 +263,16 @@ const Multiplier = () => {
 
       {/* basic representation with Next button */}
       <div className="prdBtnM">
-        <h1>Operation: {listOfAction[listOfAction.length - 1]}</h1>
+        {/* <h1>Operation: {listOfAction[listOfAction.length - 1]}</h1>
         <h1> Multiplier: {mplier}</h1>
         <br />
         <h1>Multiplicand: {mcand} </h1>
         <br />
         <h1>Product: {prod}</h1>
-        <br />
+        <br /> */}
+        <SchemaM />
         {iteration > 24 ? (
-          <Link className="homeLink" to="/">
+          <Link className="homeLinkM" to="/">
             Back to home
           </Link>
         ) : (

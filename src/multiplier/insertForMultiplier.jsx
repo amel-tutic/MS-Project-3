@@ -19,7 +19,7 @@ const InsertForMultiplier = () => {
   const handleInputs = (e) => {
     e.preventDefault();
     setSubmit(true);
-    
+
     mlbin = parseInt(ml, 10);
     mlbin = mlbin.toString(2);
     let ZeroForMl = 8 - mlbin.length;
@@ -38,8 +38,6 @@ const InsertForMultiplier = () => {
     setFirst(mlbin);
     setMultiplicand(mcbin);
     setSecond(mcbin);
-    console.log(first);
-    console.log(second);
   };
 
   //submit handler
