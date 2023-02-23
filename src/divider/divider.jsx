@@ -5,16 +5,23 @@ import { useContext } from "react";
 import { Link } from "react-router-dom";
 import SchemaD from "./schema/schemaD";
 
-
 //bring in context, define divider
 const Divider = () => {
-  const { first, second, prodCurr, setFirstCurr, setSecondCurr, setProdCurr, setActionCurr } = useContext(MyContext);
+  const {
+    first,
+    second,
+    prodCurr,
+    setFirstCurr,
+    setSecondCurr,
+    setProdCurr,
+    setActionCurr,
+    setFinish,
+  } = useContext(MyContext);
   //define quotient, divisor, remainder
   let Q = "00000000 ";
   let D = second + "00000000";
   let R = first;
 
-  
   //number 1, for two's complement, reversed for the sake of easier addition
   let ONE = [
     "1",
@@ -34,10 +41,7 @@ const Divider = () => {
     "0",
     "0",
   ];
-  
-  
 
-  
   //define states
   const [quotient, setQuotient] = useState(Q);
   const [divisor, setDivisor] = useState(D);
@@ -49,9 +53,10 @@ const Divider = () => {
   const [steps, setSteps] = useState(1);
   const [iteration, setIteration] = useState(1);
   const [tableStep, setTableStep] = useState([]);
+  const [i, setI] = useState(1);
   let msbR = "";
-  
-  if(iteration === 1){
+
+  if (iteration === 1) {
     setFirstCurr(D);
     setSecondCurr(Q);
     setProdCurr(R);
@@ -69,7 +74,175 @@ const Divider = () => {
       setTableStep([...tableStep, (iteration + 1) / 3]);
     }
   }, [iteration]);
+  useEffect(() => {
+    if (i != 1) {
+      if (iteration <= 27) {
+        console.log(iteration);
 
+        let quotientTemp = quotient;
+        let divisorTemp = divisor;
+        let remainderTemp = remainder;
+        let carry = 0;
+        let carryTemp = 0;
+
+        //split & reverse for bit by bit checking & addition
+        remainderTemp = remainderTemp.split("");
+        divisorTemp = divisorTemp.split("");
+        quotientTemp = quotientTemp.split("");
+        divisorTemp.reverse();
+        remainderTemp.reverse();
+
+        //step one
+        if (steps === 1) {
+          setListOfAction([...listOfAction, "1: Rem = Rem - Div "]);
+          setActionCurr("Rem = Rem - Div");
+
+          //one's complement
+          divisorTemp = divisorTemp.map((item) => {
+            if (item === "0") {
+              return "1";
+            } else return "0";
+          });
+
+          //two's complement
+          divisorTemp = divisorTemp.map((item, index) => {
+            carry = carryTemp;
+            carryTemp = 0;
+
+            if (carry === 0) {
+              if (ONE[index] === "0") {
+                return item;
+              } else if (item === "0") {
+                return ONE[index];
+              } else {
+                carryTemp = 1;
+                return (item = "0");
+              }
+            } else if (carry === 1) {
+              if (ONE[index] === "0" && item === "0") {
+                return "1";
+              } else if (
+                (ONE[index] === "0" && item === "1") ||
+                (ONE[index] === "1" && item === "0")
+              ) {
+                carryTemp = 1;
+                return "0";
+              } else {
+                carryTemp = 1;
+                return (item = "1");
+              }
+            }
+          });
+
+          //rem = rem - div
+          remainderTemp = remainderTemp.map((item, index) => {
+            carry = carryTemp;
+            carryTemp = 0;
+
+            if (carry === 0) {
+              if (divisorTemp[index] === "0") {
+                return item;
+              } else if (item === "0") {
+                return divisorTemp[index];
+              } else {
+                carryTemp = 1;
+                return (item = "0");
+              }
+            } else if (carry === 1) {
+              if (divisorTemp[index] === "0" && item === "0") {
+                return "1";
+              } else if (
+                (divisorTemp[index] === "0" && item === "1") ||
+                (divisorTemp[index] === "1" && item === "0")
+              ) {
+                carryTemp = 1;
+                return "0";
+              } else {
+                carryTemp = 1;
+                return (item = "1");
+              }
+            }
+          });
+
+          //unreverse and join remainder bits
+          setRemainder(remainderTemp.reverse().join(""));
+          setProdCurr(remainderTemp.join(""));
+        }
+
+        //step two
+        if (steps === 2) {
+          if (remainder[0] === "1") {
+            setListOfAction([...listOfAction, "2b: Rem<0, R+D , Q<<"]);
+            setActionCurr("Rem<0");
+            remainderTemp = remainderTemp.map((item, index) => {
+              carry = carryTemp;
+              carryTemp = 0;
+
+              if (carry === 0) {
+                if (divisorTemp[index] === "0") {
+                  return item;
+                } else if (item === "0") {
+                  return divisorTemp[index];
+                } else {
+                  carryTemp = 1;
+                  return (item = "0");
+                }
+              } else if (carry === 1) {
+                if (divisorTemp[index] === "0" && item === "0") {
+                  return "1";
+                } else if (
+                  (divisorTemp[index] === "0" && item === "1") ||
+                  (divisorTemp[index] === "1" && item === "0")
+                ) {
+                  carryTemp = 1;
+                  return "0";
+                } else {
+                  carryTemp = 1;
+                  return (item = "1");
+                }
+              }
+            });
+
+            //unreverse and join remainder bits
+            setRemainder(remainderTemp.reverse().join(""));
+
+            quotientTemp = quotientTemp.slice(1, 8).join("") + "0";
+            setQuotient(quotientTemp);
+            setSecondCurr(quotientTemp);
+            setProdCurr(remainderTemp.join(""));
+          } else {
+            setListOfAction([...listOfAction, "2a:Rem >= 0, Q<<,Q0 = 1"]);
+            setActionCurr("Rem>=0");
+            quotientTemp = quotientTemp.slice(1, 8).join("") + "1";
+            setQuotient(quotientTemp);
+            setSecondCurr(quotientTemp);
+          }
+        }
+
+        //step three
+        if (steps === 3) {
+          setListOfAction([...listOfAction, "3: Shift right Divisor"]);
+          setActionCurr("Shift right divisor");
+          divisorTemp.reverse();
+
+          //shift right mplier, reset steps
+          divisorTemp = "0" + divisorTemp.slice(0, 15).join("");
+          setDivisor(divisorTemp);
+          setFirstCurr(divisorTemp);
+          step = 0;
+          setTableStep([...tableStep]);
+        }
+        setSteps(step + 1);
+      }
+      //next iteration
+      setIteration(iteration + 1);
+    }
+    if (i < 28 && i !== 1) {
+      setI(i + 1);
+      let k = 2;
+      setFinish(k + 2);
+    }
+  }, [i]);
   //helper for reseting steps
   let step = steps;
 
@@ -204,10 +377,10 @@ const Divider = () => {
 
           //unreverse and join remainder bits
           setRemainder(remainderTemp.reverse().join(""));
-          
+
           quotientTemp = quotientTemp.slice(1, 8).join("") + "0";
           setQuotient(quotientTemp);
-          setSecondCurr(quotientTemp);  
+          setSecondCurr(quotientTemp);
           setProdCurr(remainderTemp.join(""));
         } else {
           setListOfAction([...listOfAction, "2a:Rem >= 0, Q<<,Q0 = 1"]);
@@ -235,6 +408,11 @@ const Divider = () => {
     }
     //next iteration
     setIteration(iteration + 1);
+  }
+
+  function Finsish() {
+    let k = i;
+    setI(k + 1);
   }
 
   //visual representation
@@ -270,7 +448,7 @@ const Divider = () => {
         {/* step by step representation */}
         {/* formulas for iteration according to steps -> [step*3-2, step*3-1, step*3] */}
         {tableStep.map((item, index) => {
-          msbR = listOfRemainder[item*3-2];
+          msbR = listOfRemainder[item * 3 - 2];
 
           return (
             <tr>
@@ -373,7 +551,6 @@ const Divider = () => {
                   <div>{listOfRemainder[item * 3]}</div>
                 </tr>
               </td>
-
             </tr>
           );
         })}
@@ -391,7 +568,10 @@ const Divider = () => {
             Back to home
           </Link>
         ) : (
-          <button onClick={Step}>Next</button>
+          <div>
+            <button onClick={Step}>Next</button>
+            <button onClick={Finsish}>Finish</button>
+          </div>
         )}
       </div>
     </div>

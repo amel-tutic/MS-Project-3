@@ -10,6 +10,8 @@ const SimpleContext = (props) => {
   const [secondCurr, setSecondCurr] = useState("");
   const [prodCurr, setProdCurr] = useState("");
   const [actionCurr, setActionCurr] = useState("");
+  const [currIteration, setCurrIteration] = useState();
+  const [finish, setFinish] = useState(1);
 
   return (
     <MyContext.Provider
@@ -26,6 +28,10 @@ const SimpleContext = (props) => {
         setProdCurr,
         actionCurr,
         setActionCurr,
+        currIteration,
+        setCurrIteration,
+        finish,
+        setFinish,
       }}
     >
       {props.children}

@@ -16,12 +16,14 @@ const Multiplier = () => {
     setSecondCurr,
     setProdCurr,
     setActionCurr,
+    currIteration,
+    setCurrIteration,
+    setFinish,
   } = useContext(MyContext);
   //define mcand, mplier, product
   let Ml = first;
   let Mc = second;
   let P = "0000000000000000";
-  
   useEffect(() => {
     setFirstCurr(Ml);
     setSecondCurr(Mc);
@@ -40,7 +42,9 @@ const Multiplier = () => {
   const [listOfProd, setListOfProd] = useState([]);
   const [tableStep, setTableStep] = useState([]);
   const [listOfAction, setListOfAction] = useState(["Initial values"]);
-
+  const [finishClick, setFinishClick] = useState(false);
+  const [i, setI] = useState(1);
+  
   //define iteration effect
   useEffect(() => {
     if (iteration !== 0) {
@@ -53,9 +57,116 @@ const Multiplier = () => {
     }
   }, [iteration]);
 
+  useEffect(() => {
+    if (i != 1) {
+      for (let i = 1; i <= 25; i++) {
+        if (iteration <= 24) {
+          console.log(iteration);
+
+          let mplierTemp = mplier;
+          let mcandTemp = mcand;
+          let prodTemp = prod;
+          let carry = 0;
+          let carryTemp = 0;
+
+          //split & reverse for bit by bit checking & addition
+          mplierTemp = mplierTemp.split("");
+          mcandTemp = mcandTemp.split("");
+          mcandTemp.reverse();
+          prodTemp = prodTemp.split("");
+          prodTemp.reverse();
+
+          //step one
+          if (steps === 1) {
+            if (mplierTemp[7] === "1") {
+              setListOfAction([
+                ...listOfAction,
+                "1a: Prod = Prod + Mcand (LSB=1)",
+              ]);
+              setActionCurr("Prod = Prod + Mcand");
+              //addition, prod=prod+mcand
+              prodTemp = prodTemp.map((item, index) => {
+                carry = carryTemp;
+                carryTemp = 0;
+
+                if (carry === 0) {
+                  if (mcandTemp[index] === "0") {
+                    return item;
+                  } else if (item === "0") {
+                    return mcandTemp[index];
+                  } else {
+                    carryTemp = 1;
+                    return (item = "0");
+                  }
+                } else if (carry === 1) {
+                  if (mcandTemp[index] === "0" && item === "0") {
+                    return "1";
+                  } else if (
+                    (mcandTemp[index] === "0" && item === "1") ||
+                    (mcandTemp[index] === "1" && item === "0")
+                  ) {
+                    carryTemp = 1;
+                    return "0";
+                  } else {
+                    carryTemp = 1;
+                    return (item = "1");
+                  }
+                }
+              });
+              //unreverse and join product bits
+              setProd(prodTemp.reverse().join(""));
+              setProdCurr(prodTemp.join(""));
+            } else {
+              setListOfAction([...listOfAction, "1b: No operation (LSB=0)"]);
+              setActionCurr("No operation");
+            }
+          }
+
+          //step two
+          if (steps === 2) {
+            setListOfAction([...listOfAction, "2: Shift left Multiplicand"]);
+            setActionCurr("Shift left Multiplicand");
+            //unreverse and shift left mcand
+            mcandTemp.reverse();
+            mcandTemp = mcandTemp.slice(1).join("") + "0";
+            setSecondCurr(mcandTemp);
+            setMcand(mcandTemp);
+          }
+
+          //step three
+          if (steps === 3) {
+            setListOfAction([...listOfAction, "3: Shift right Multiplier"]);
+            setActionCurr("Shift right Multiplier");
+            //shift right mplier, reset steps
+            mplierTemp = "0" + mplierTemp.slice(0, 7).join("");
+            setFirstCurr(mplierTemp);
+            setMplier(mplierTemp);
+            step = 0;
+            setTableStep([...tableStep]);
+          }
+          setSteps(step + 1);
+        }
+        //next iteration
+        let i = iteration + 1;
+        setIteration(iteration + 1);
+        setCurrIteration(i);
+      }
+    }
+    if (i < 26 && i !== 1) {
+      setI(i + 1);
+      let k = 2;
+      setFinish(k + 2);
+    }
+  }, [i]);
   //helper for reseting steps
   let step = steps;
+  function ToEnd() {
+    setTimeout(cons, 2000);
+  }
 
+  function cons() {
+    console.log("mirza");
+  }
   //function for a whole step
   function Step() {
     if (iteration <= 24) {
@@ -79,7 +190,6 @@ const Multiplier = () => {
         if (mplierTemp[7] === "1") {
           setListOfAction([...listOfAction, "1a: Prod = Prod + Mcand (LSB=1)"]);
           setActionCurr("Prod = Prod + Mcand");
-
           //addition, prod=prod+mcand
           prodTemp = prodTemp.map((item, index) => {
             carry = carryTemp;
@@ -138,12 +248,18 @@ const Multiplier = () => {
         setFirstCurr(mplierTemp);
         setMplier(mplierTemp);
         step = 0;
-        // setTableStep([...tableStep]);
+        setTableStep([...tableStep]);
       }
       setSteps(step + 1);
     }
     //next iteration
+    let i = iteration + 1;
     setIteration(iteration + 1);
+    setCurrIteration(i);
+  }
+  function Finsish() {
+    let k = i;
+    setI(k + 1);
   }
 
   //visual representation
@@ -272,7 +388,10 @@ const Multiplier = () => {
             Back to home
           </Link>
         ) : (
-          <button onClick={Step}>Next</button>
+          <div>
+            <button onClick={Step}>Next</button>
+            <button onClick={Finsish}>Finish</button>
+          </div>
         )}
       </div>
     </div>

@@ -1,0 +1,82 @@
+.valGreenMO {
+  font-size: 17px;
+  fill: rgb(13, 255, 21);
+  stroke: rgb(13, 255, 21);
+}
+.valMO {
+  font-size: 17px;
+}
+.valRedMO {
+  font-size: 17px;
+  fill: red;
+  stroke: red;
+}
+.valBlackMO {
+  font-size: 17px;
+  fill: black;
+  stroke: black;
+}
+.valOrangeMO {
+  font-size: 17px;
+  fill: rgb(255, 130, 13);
+  stroke: rgb(255, 130, 13);
+}
+.controlTestRedMO {
+  stroke: red;
+
+  filter: drop-shadow(1px 1px 5px red);
+}
+
+.controlTestGreenMO {
+  stroke: rgb(13, 255, 21);
+  filter: drop-shadow(1px 1px 10px rgb(13, 255, 21));
+}
+.controlTestWhiteMO {
+  stroke: white;
+}
+.controlTestOrangeMO {
+  stroke: rgb(255, 130, 13);
+  filter: drop-shadow(1px 1px 10px rgb(255, 130, 13));
+}
+.controlTestBlackMO {
+  stroke: rgb(2, 2, 2);
+  filter: drop-shadow(1px 1px 10px rgb(2, 2, 2));
+}
+.arrowsRedMO {
+  fill: red;
+}
+.arrowsWhiteMO {
+  fill: white;
+}
+.arrowsOrangeMO {
+  fill: rgb(255, 130, 13);
+}
+.arrowsGreenMO {
+  fill: rgb(13, 255, 21);
+}
+.arrowsBlackMO {
+  fill: rgb(2, 2, 2);
+}
+.TextRedMO {
+  fill: red;
+  stroke: #ff0000;
+  font-size: 23px;
+}
+.TextGreenMO {
+  fill: rgb(13, 255, 21);
+  stroke: rgb(13, 255, 21);
+  font-size: 23px;
+}
+.TextBlackMO {
+  fill: black;
+  stroke: black;
+  font-size: 23px;
+}
+.TextWhiteMO {
+  fill: white;
+
+  font-size: 23px;
+}
+.TextMO {
+  font-size: 23px;
+}

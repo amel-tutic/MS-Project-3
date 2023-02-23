@@ -36,7 +36,7 @@
   align-items: center;
   background-color: white;
   border: none;
-  width: 150px;
+  width: 200px;
   height: 100px;
   border-radius: 10px;
 }
@@ -47,7 +47,7 @@
   border: none;
   border-radius: 10px;
   background-color: white;
-  width: 150px;
+  width: 200px;
 }
 .linkDiv:hover {
   color: rgb(255, 255, 255);
@@ -61,4 +61,8 @@
 .homeLinkInsert {
   color: beige !important;
   font-size: larger;
+}
+.ValidDiv {
+  font-size: 25px;
+  text-align: center;
 }

@@ -4,11 +4,14 @@ import { MyContext } from "../../simpleContext";
 import { useContext } from "react";
 
 const SchemaM = () => {
-  const { firstCurr, secondCurr, prodCurr, actionCurr } = useContext(MyContext);
+  const { firstCurr, secondCurr, prodCurr, actionCurr, currIteration, finish } =
+    useContext(MyContext);
   let mplier = firstCurr;
   mplier = mplier.split("");
   let LSB = mplier[mplier.length - 1];
+
   const [prods, setProds] = useState([prodCurr]);
+
   useEffect(() => {
     setProds([...prods, prodCurr]);
   }, [prodCurr]);
@@ -61,7 +64,13 @@ const SchemaM = () => {
         stroke-width="2"
       />
       <text
-      
+        // className={
+        //   actionCurr === "Prod = Prod + Mcand"
+        //     ? "TextRed"
+        //     : actionCurr === "Shift left Multiplicand"
+        //     ? "TextGreen"
+        //     : "TextWhite"
+        // }
         className="Text"
         x="328"
         y="65"
@@ -94,7 +103,7 @@ const SchemaM = () => {
         {secondCurr}
       </text>
       <text className="Text" x="280" y="206" fill="white">
-        ALU
+        Alu
       </text>
       {actionCurr === "Prod = Prod + Mcand" ? (
         <text className="valBlack" x="215" y="230">
@@ -152,11 +161,16 @@ const SchemaM = () => {
           {prods[prods.length - 2]}
         </text>
       ) : null}
-      {actionCurr === "Shift right Multiplier" && LSB === "0" ? (
+      {finish != 1 && currIteration > 24 ? null : actionCurr ===
+          "Shift right Multiplier" &&
+        LSB === "0" &&
+        currIteration != 25 ? (
         <text className="valRed" x="535" y="380" fill="white">
           LSB = 0
         </text>
-      ) : actionCurr === "Shift right Multiplier" && LSB === "1" ? (
+      ) : actionCurr === "Shift right Multiplier" &&
+        LSB === "1" &&
+        currIteration != 25 ? (
         <text className="valGreen" x="535" y="380" fill="white">
           LSB = 1
         </text>
@@ -190,7 +204,7 @@ const SchemaM = () => {
         y="289"
         fill="white"
       >
-        Shift right
+        Shif right
       </text>
       <text
         className={actionCurr === "Shift right Multiplier" ? "valGreen" : "val"}
@@ -261,12 +275,18 @@ const SchemaM = () => {
         }
         d="M404 449L413 441.206V456.794L404 449Z"
       />
-      {/* strelica iz mcand u control test */}
+      {/* strelica iz mpliera u control test */}
       <path
         className={
-          actionCurr === "Shift right Multiplier" && LSB === "0"
+          finish != 1 && currIteration > 24
+            ? "arrowsWhite"
+            : actionCurr === "Shift right Multiplier" &&
+              LSB === "0" &&
+              currIteration != 25
             ? "arrowsRed"
-            : actionCurr === "Shift right Multiplier" && LSB === "1"
+            : actionCurr === "Shift right Multiplier" &&
+              LSB === "1" &&
+              currIteration != 25
             ? "arrowsGreen"
             : actionCurr === "initial values" && LSB === "0"
             ? "arrowsRed"
@@ -357,9 +377,15 @@ const SchemaM = () => {
       {/* linija iz mpliera u control test */}
       <path
         className={
-          actionCurr === "Shift right Multiplier" && LSB === "0"
+          finish != 1 && currIteration > 24
+            ? "controlTestWhite"
+            : actionCurr === "Shift right Multiplier" &&
+              LSB === "0" &&
+              currIteration != 25
             ? "controlTestRed"
-            : actionCurr === "Shift right Multiplier" && LSB === "1"
+            : actionCurr === "Shift right Multiplier" &&
+              LSB === "1" &&
+              currIteration != 25
             ? "controlTestGreen"
             : actionCurr === "initial values" && LSB === "0"
             ? "controlTestRed"

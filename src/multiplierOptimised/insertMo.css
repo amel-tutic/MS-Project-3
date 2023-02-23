@@ -29,6 +29,16 @@ button:hover {
   background-color: rgb(156, 193, 226);
   color: white;
 }
+.prdBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.homeLinkMo {
+  margin-top: 50px !important;
+  color: white !important;
+  font-size: large !important;
+}
 .homeLinkInsert {
   color: antiquewhite;
   font-size: larger;
