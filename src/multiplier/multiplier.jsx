@@ -21,6 +21,7 @@ const Multiplier = () => {
   let Ml = first;
   let Mc = second;
   let P = "0000000000000000";
+  
   useEffect(() => {
     setFirstCurr(Ml);
     setSecondCurr(Mc);
@@ -54,13 +55,7 @@ const Multiplier = () => {
 
   //helper for reseting steps
   let step = steps;
-  function ToEnd() {
-    setTimeout(cons, 2000);
-  }
 
-  function cons() {
-    console.log("mirza");
-  }
   //function for a whole step
   function Step() {
     if (iteration <= 24) {
@@ -84,6 +79,7 @@ const Multiplier = () => {
         if (mplierTemp[7] === "1") {
           setListOfAction([...listOfAction, "1a: Prod = Prod + Mcand (LSB=1)"]);
           setActionCurr("Prod = Prod + Mcand");
+
           //addition, prod=prod+mcand
           prodTemp = prodTemp.map((item, index) => {
             carry = carryTemp;

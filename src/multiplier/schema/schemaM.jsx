@@ -61,13 +61,7 @@ const SchemaM = () => {
         stroke-width="2"
       />
       <text
-        // className={
-        //   actionCurr === "Prod = Prod + Mcand"
-        //     ? "TextRed"
-        //     : actionCurr === "Shift left Multiplicand"
-        //     ? "TextGreen"
-        //     : "TextWhite"
-        // }
+      
         className="Text"
         x="328"
         y="65"
@@ -100,7 +94,7 @@ const SchemaM = () => {
         {secondCurr}
       </text>
       <text className="Text" x="280" y="206" fill="white">
-        Alu
+        ALU
       </text>
       {actionCurr === "Prod = Prod + Mcand" ? (
         <text className="valBlack" x="215" y="230">
@@ -196,7 +190,7 @@ const SchemaM = () => {
         y="289"
         fill="white"
       >
-        Shif right
+        Shift right
       </text>
       <text
         className={actionCurr === "Shift right Multiplier" ? "valGreen" : "val"}

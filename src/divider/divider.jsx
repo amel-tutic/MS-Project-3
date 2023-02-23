@@ -3,15 +3,18 @@ import "./div.css";
 import { MyContext } from "../simpleContext";
 import { useContext } from "react";
 import { Link } from "react-router-dom";
+import SchemaD from "./schema/schemaD";
+
 
 //bring in context, define divider
 const Divider = () => {
-  const { first, second } = useContext(MyContext);
+  const { first, second, prodCurr, setFirstCurr, setSecondCurr, setProdCurr, setActionCurr } = useContext(MyContext);
   //define quotient, divisor, remainder
   let Q = "00000000 ";
   let D = second + "00000000";
   let R = first;
 
+  
   //number 1, for two's complement, reversed for the sake of easier addition
   let ONE = [
     "1",
@@ -32,6 +35,9 @@ const Divider = () => {
     "0",
   ];
   
+  
+
+  
   //define states
   const [quotient, setQuotient] = useState(Q);
   const [divisor, setDivisor] = useState(D);
@@ -44,6 +50,13 @@ const Divider = () => {
   const [iteration, setIteration] = useState(1);
   const [tableStep, setTableStep] = useState([]);
   let msbR = "";
+  
+  if(iteration === 1){
+    setFirstCurr(D);
+    setSecondCurr(Q);
+    setProdCurr(R);
+    setActionCurr("initial values");
+  }
 
   //define iteration effect
   useEffect(() => {
@@ -81,6 +94,7 @@ const Divider = () => {
       //step one
       if (steps === 1) {
         setListOfAction([...listOfAction, "1: Rem = Rem - Div "]);
+        setActionCurr("Rem = Rem - Div");
 
         //one's complement
         divisorTemp = divisorTemp.map((item) => {
@@ -151,12 +165,14 @@ const Divider = () => {
 
         //unreverse and join remainder bits
         setRemainder(remainderTemp.reverse().join(""));
+        setProdCurr(remainderTemp.join(""));
       }
 
       //step two
       if (steps === 2) {
         if (remainder[0] === "1") {
           setListOfAction([...listOfAction, "2b: Rem<0, R+D , Q<<"]);
+          setActionCurr("Rem<0");
           remainderTemp = remainderTemp.map((item, index) => {
             carry = carryTemp;
             carryTemp = 0;
@@ -188,24 +204,30 @@ const Divider = () => {
 
           //unreverse and join remainder bits
           setRemainder(remainderTemp.reverse().join(""));
-
+          
           quotientTemp = quotientTemp.slice(1, 8).join("") + "0";
           setQuotient(quotientTemp);
+          setSecondCurr(quotientTemp);  
+          setProdCurr(remainderTemp.join(""));
         } else {
           setListOfAction([...listOfAction, "2a:Rem >= 0, Q<<,Q0 = 1"]);
+          setActionCurr("Rem>=0");
           quotientTemp = quotientTemp.slice(1, 8).join("") + "1";
           setQuotient(quotientTemp);
+          setSecondCurr(quotientTemp);
         }
       }
 
       //step three
       if (steps === 3) {
         setListOfAction([...listOfAction, "3: Shift right Divisor"]);
+        setActionCurr("Shift right divisor");
         divisorTemp.reverse();
 
         //shift right mplier, reset steps
         divisorTemp = "0" + divisorTemp.slice(0, 15).join("");
         setDivisor(divisorTemp);
+        setFirstCurr(divisorTemp);
         step = 0;
         setTableStep([...tableStep]);
       }
@@ -359,10 +381,11 @@ const Divider = () => {
 
       {/* basic representation with Next button */}
       <div className="prdBtnD">
-        <h1>Operation: {listOfAction[listOfAction.length - 1]}</h1>
+        {/* <h1>Operation: {listOfAction[listOfAction.length - 1]}</h1>
         <h1>Quotient: {quotient}</h1>
         <h1>Divisor: {divisor}</h1>
-        <h1>Remainder: {remainder}</h1>
+        <h1>Remainder: {remainder}</h1> */}
+        <SchemaD />
         {iteration > 27 ? (
           <Link className="homeLink" to="/">
             Back to home
